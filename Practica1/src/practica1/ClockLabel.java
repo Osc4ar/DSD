@@ -9,13 +9,8 @@ package practica1;
  *
  * @author oscar
  */
-public class Practica1 {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+public class ClockLabel extends javax.swing.JLabel implements ClockListener {
+    public void updateTime(String time) {
+        this.setText(time);
     }
-    
 }
