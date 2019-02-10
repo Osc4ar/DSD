@@ -11,12 +11,19 @@ package practica1;
  */
 public class GUI extends javax.swing.JFrame {
     
-    Clock clock;
+    Clock[] clocks;
     
     public GUI() {
         initComponents();
-//        clock = new Clock(clockLabel2);
-//        clock.start();
+        
+        clocks = new Clock[4];
+        clocks[0] = new Clock(clockLabel1);
+        clocks[1] = new Clock(clockLabel2);
+        clocks[2] = new Clock(clockLabel3);
+        clocks[3] = new Clock(clockLabel4);
+        
+        for(Clock clock: clocks)
+            clock.start();
     }
 
     /**
@@ -29,42 +36,18 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         Panel = new javax.swing.JPanel();
-        clockLabel1 = new javax.swing.JLabel();
-        clockLabel2 = new javax.swing.JLabel();
-        clockLabel3 = new javax.swing.JLabel();
-        clockLabel4 = new javax.swing.JLabel();
         editButton1 = new javax.swing.JButton();
         editButton2 = new javax.swing.JButton();
         editButton3 = new javax.swing.JButton();
         editButton4 = new javax.swing.JButton();
+        clockLabel1 = new practica1.ClockLabel();
+        clockLabel2 = new practica1.ClockLabel();
+        clockLabel3 = new practica1.ClockLabel();
+        clockLabel4 = new practica1.ClockLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         Panel.setBackground(new java.awt.Color(37, 70, 94));
-
-        clockLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        clockLabel1.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
-        clockLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        clockLabel1.setText("14:40:57");
-        clockLabel1.setOpaque(true);
-
-        clockLabel2.setBackground(new java.awt.Color(255, 255, 255));
-        clockLabel2.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
-        clockLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        clockLabel2.setText("14:40:57");
-        clockLabel2.setOpaque(true);
-
-        clockLabel3.setBackground(new java.awt.Color(255, 255, 255));
-        clockLabel3.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
-        clockLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        clockLabel3.setText("14:40:57");
-        clockLabel3.setOpaque(true);
-
-        clockLabel4.setBackground(new java.awt.Color(255, 255, 255));
-        clockLabel4.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
-        clockLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        clockLabel4.setText("14:40:57");
-        clockLabel4.setOpaque(true);
 
         editButton1.setBackground(new java.awt.Color(56, 89, 176));
         editButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/edit.png"))); // NOI18N
@@ -98,15 +81,40 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        clockLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        clockLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        clockLabel1.setText("14:40:57");
+        clockLabel1.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
+        clockLabel1.setOpaque(true);
+
+        clockLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        clockLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        clockLabel2.setText("14:40:57");
+        clockLabel2.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
+        clockLabel2.setOpaque(true);
+
+        clockLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        clockLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        clockLabel3.setText("14:40:57");
+        clockLabel3.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
+        clockLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        clockLabel3.setOpaque(true);
+
+        clockLabel4.setBackground(new java.awt.Color(255, 255, 255));
+        clockLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        clockLabel4.setText("14:40:57");
+        clockLabel4.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
+        clockLabel4.setOpaque(true);
+
         javax.swing.GroupLayout PanelLayout = new javax.swing.GroupLayout(Panel);
         Panel.setLayout(PanelLayout);
         PanelLayout.setHorizontalGroup(
             PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(clockLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(clockLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(clockLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                    .addComponent(clockLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(editButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -126,17 +134,16 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(PanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(clockLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(clockLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(editButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(editButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(clockLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(clockLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(editButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(clockLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(editButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(clockLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(clockLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
+                    .addComponent(clockLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -208,10 +215,10 @@ public class GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panel;
-    private javax.swing.JLabel clockLabel1;
-    private javax.swing.JLabel clockLabel2;
-    private javax.swing.JLabel clockLabel3;
-    private javax.swing.JLabel clockLabel4;
+    private practica1.ClockLabel clockLabel1;
+    private practica1.ClockLabel clockLabel2;
+    private practica1.ClockLabel clockLabel3;
+    private practica1.ClockLabel clockLabel4;
     private javax.swing.JButton editButton1;
     private javax.swing.JButton editButton2;
     private javax.swing.JButton editButton3;
