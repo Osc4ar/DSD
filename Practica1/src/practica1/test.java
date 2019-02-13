@@ -27,8 +27,10 @@ public class test {
         minutos = calendario.get(Calendar.MINUTE);
         segundos = calendario.get(Calendar.SECOND);
         System.out.println(hora + ":" + minutos + ":" + segundos);
-        ControlClock clock = new ControlClock();
-        
+        ControlClock clock = new ControlClock(hora, minutos, segundos);
+        clock.incrementarSegundo(1);
+        clock.incrementarMinuto(2);
+        clock.incrementarHora(4);
         hora=clock.getHora();
         minutos=clock.getMinutos();
         segundos=clock.getSegundos();
