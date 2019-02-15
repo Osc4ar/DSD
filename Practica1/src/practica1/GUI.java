@@ -5,6 +5,11 @@
  */
 package practica1;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+
 /**
  *
  * @author oscar
@@ -17,10 +22,10 @@ public class GUI extends javax.swing.JFrame {
         initComponents();
         
         clocks = new Clock[4];
-        clocks[0] = new Clock(clockLabel1,true);
+        clocks[0] = new Clock(clockLabel1,false);
         clocks[1] = new Clock(clockLabel2,true);
         clocks[2] = new Clock(clockLabel3,true);
-        clocks[3] = new Clock(clockLabel4,false);
+        clocks[3] = new Clock(clockLabel4,true);
         
         for(Clock clock: clocks)
             clock.start();
@@ -162,19 +167,19 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void editButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButton3ActionPerformed
-        // TODO add your handling code here:
+        new EditClock(clocks[2]);
     }//GEN-LAST:event_editButton3ActionPerformed
 
     private void editButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButton2ActionPerformed
-        // TODO add your handling code here:
+        new EditClock(clocks[1]);
     }//GEN-LAST:event_editButton2ActionPerformed
 
     private void editButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButton4ActionPerformed
-        // TODO add your handling code here:
+        new EditClock(clocks[3]);
     }//GEN-LAST:event_editButton4ActionPerformed
 
     private void editButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButton1ActionPerformed
-        // TODO add your handling code here:
+        new EditClock(clocks[0]);
     }//GEN-LAST:event_editButton1ActionPerformed
 
     /**
@@ -224,4 +229,5 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton editButton3;
     private javax.swing.JButton editButton4;
     // End of variables declaration//GEN-END:variables
+
 }
