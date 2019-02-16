@@ -140,6 +140,7 @@ public class EditClock extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         clock.speed = savedSpeed;
+        clock.sendUpdate();
         setVisible(false);
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed

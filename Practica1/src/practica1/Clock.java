@@ -43,8 +43,8 @@ public class Clock extends Thread {
     }
     
     public void sendUpdate() {
-        String time = getFormattedTime();
-        for(ClockListener listener : listeners)
+       String time = getFormattedTime();
+       for(ClockListener listener : listeners)
             listener.updateTime(time);
     }
     
