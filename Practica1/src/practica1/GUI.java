@@ -26,7 +26,6 @@ public class GUI extends javax.swing.JFrame {
         clocks[1] = new Clock(clockLabel2,true);
         clocks[2] = new Clock(clockLabel3,true);
         clocks[3] = new Clock(clockLabel4,true);
-        
         for(Clock clock: clocks)
             clock.start();
     }

@@ -5,6 +5,9 @@
  */
 package practica1;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  *
  * @author oscar
@@ -13,11 +16,13 @@ public class EditClock extends javax.swing.JFrame {
 
     
     Clock clock;
+    int savedSpeed;
     
     public EditClock(Clock clock) {
         initComponents();
         setVisible(true);
         this.clock = clock;
+        this.savedSpeed = this.clock.speed;
         this.clock.speed = 0;
     }
 
@@ -117,8 +122,11 @@ public class EditClock extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        clock.localTime.setHours((Integer)jSpinner1.getValue());
-        clock.localTime.setMinutes((Integer)jSpinner2.getValue());
+        int hour = (Integer)jSpinner1.getValue();
+        int min = (Integer)jSpinner2.getValue();
+        clock.calendar.set(Calendar.HOUR_OF_DAY, hour);
+        clock.calendar.set(Calendar.MINUTE, min);
+        clock.calendar.set(Calendar.SECOND, 0);
         clock.speed = (Integer)jSpinner3.getValue();
         clock.listener.updateTime(clock.formatTime());
         setVisible(false);
@@ -126,7 +134,7 @@ public class EditClock extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        clock.speed = clock.previous_speed;
+        clock.speed = savedSpeed;
         setVisible(false);
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
