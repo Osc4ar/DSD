@@ -131,11 +131,9 @@ public class EditClock extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int hour = (Integer)jSpinner1.getValue();
         int min = (Integer)jSpinner2.getValue();
-        clock.calendar.set(Calendar.HOUR_OF_DAY, hour);
-        clock.calendar.set(Calendar.MINUTE, min);
-        clock.calendar.set(Calendar.SECOND, 0);
+        clock.setTime(hour, min, 0);
         clock.speed = getSpeedScale((Integer)jSpinner3.getValue());
-        clock.listener.updateTime(clock.formatTime());
+        clock.sendUpdate();
         setVisible(false);
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed

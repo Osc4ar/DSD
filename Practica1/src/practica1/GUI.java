@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 /**
  *
@@ -20,14 +21,13 @@ public class GUI extends javax.swing.JFrame {
     
     public GUI() {
         initComponents();
-        
+        ClockLabel[] clockLabels = {clockLabel1, clockLabel2, clockLabel3, clockLabel4};
         clocks = new Clock[4];
-        clocks[0] = new Clock(clockLabel1,false);
-        clocks[1] = new Clock(clockLabel2,true);
-        clocks[2] = new Clock(clockLabel3,true);
-        clocks[3] = new Clock(clockLabel4,true);
-        for(Clock clock: clocks)
-            clock.start();
+        for(int i = 0; i < clocks.length; i++) {
+            clocks[i] = new Clock(i != 0);
+            clocks[i].addListener(clockLabels[i]);
+            clocks[i].start();
+        }
     }
 
     /**

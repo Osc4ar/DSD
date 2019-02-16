@@ -11,37 +11,50 @@ package practica1;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 /**
  *
  * @author oscar
  */
 public class Clock extends Thread {
-    ClockListener listener;
+    ArrayList<ClockListener> listeners;
     int sec, min, hours;
-    double speed;
+    volatile double speed = 1;
     String time;
-    Date localTime;
     GregorianCalendar calendar;
+    SimpleDateFormat ft;
     
     
-    public Clock(ClockListener listener, boolean flag) {
-        this.listener = listener;
-        localTime = new Date();
+    public Clock(boolean randomTime) {
+        this.listeners = new ArrayList<ClockListener>();
+        ft = new SimpleDateFormat("HH:mm:ss");
         calendar =  new GregorianCalendar();
-        if (flag){//true == random time
+        if (randomTime) {
             sec = (int)(Math.random()*60);
             min = (int)(Math.random()*60);
             hours = (int)(Math.random()*24);
-            localTime.setHours(hours);
-            localTime.setMinutes(min);
-            localTime.setSeconds(sec);
+            setTime(hours, min, sec);
         }
-        speed = 1;
-        calendar.setTime(localTime);
     }
     
-    public String formatTime(){
-        SimpleDateFormat ft = new SimpleDateFormat("HH:mm:ss");
+    public void addListener(ClockListener listener) {
+        listeners.add(listener);
+    }
+    
+    public void sendUpdate() {
+        String time = getFormattedTime();
+        for(ClockListener listener : listeners)
+            listener.updateTime(time);
+    }
+    
+    public void setTime(int hours, int min, int sec) {
+        calendar.set(Calendar.HOUR_OF_DAY, hours);
+        calendar.set(Calendar.MINUTE, min);
+        calendar.set(Calendar.SECOND, sec);
+    }
+    
+    public String getFormattedTime() {
         time = ft.format(calendar.getTime());
         return time;
     }
@@ -50,11 +63,10 @@ public class Clock extends Thread {
     public void run() {
         try { 
             while(true) {
-                System.out.println(speed);
                 if(speed != 0) {
                     Thread.sleep(Math.round(1000 / speed));
                     calendar.add(GregorianCalendar.SECOND, 1);
-                    listener.updateTime(formatTime());
+                    sendUpdate();
                 }
             }
         } catch (InterruptedException ie) {
