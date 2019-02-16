@@ -16,7 +16,7 @@ public class EditClock extends javax.swing.JFrame {
 
     
     Clock clock;
-    int savedSpeed;
+    double savedSpeed;
     
     public EditClock(Clock clock) {
         initComponents();
@@ -26,6 +26,13 @@ public class EditClock extends javax.swing.JFrame {
         this.clock.speed = 0;
     }
 
+    public double getSpeedScale(int speedSpinner) {
+        if (speedSpinner >= 0)
+            return speedSpinner;
+        speedSpinner *= -1;
+        return 1.0/speedSpinner;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -73,7 +80,7 @@ public class EditClock extends javax.swing.JFrame {
 
         jSpinner2.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
 
-        jSpinner3.setModel(new javax.swing.SpinnerNumberModel(1, 1, 1000, 1));
+        jSpinner3.setModel(new javax.swing.SpinnerNumberModel(1, -1000, 1000, 1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -127,7 +134,7 @@ public class EditClock extends javax.swing.JFrame {
         clock.calendar.set(Calendar.HOUR_OF_DAY, hour);
         clock.calendar.set(Calendar.MINUTE, min);
         clock.calendar.set(Calendar.SECOND, 0);
-        clock.speed = (Integer)jSpinner3.getValue();
+        clock.speed = getSpeedScale((Integer)jSpinner3.getValue());
         clock.listener.updateTime(clock.formatTime());
         setVisible(false);
         dispose();

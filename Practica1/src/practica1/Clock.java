@@ -17,7 +17,8 @@ import java.text.SimpleDateFormat;
  */
 public class Clock extends Thread {
     ClockListener listener;
-    int sec, min, hours, speed;
+    int sec, min, hours;
+    double speed;
     String time;
     Date localTime;
     GregorianCalendar calendar;
@@ -51,7 +52,7 @@ public class Clock extends Thread {
             while(true) {
                 System.out.println(speed);
                 if(speed != 0) {
-                    Thread.sleep(1000 / speed);
+                    Thread.sleep(Math.round(1000 / speed));
                     calendar.add(GregorianCalendar.SECOND, 1);
                     listener.updateTime(formatTime());
                 }
