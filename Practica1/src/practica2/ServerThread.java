@@ -16,46 +16,36 @@ import practica1.ClockListener;
  *
  * @author oscar
  */
-public class Server extends Thread implements ClockListener {
+public class ServerThread extends Thread implements ClockListener {
     ServerSocket serverSocket;
     Socket socket;
     PrintWriter output;
     Clock clock;
     int port = 10000;
+    int id;
     
-    public Server() {
-        clock = new Clock(false);
-        clock.start();
+    public ServerThread(int id, Clock clock) {
+        this.id = id;
+        this.port += this.id;
+        this.clock = clock;
         clock.addListener(this);
-        try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            System.err.println(e);
-        }
     }
     
-    public void createConnection() {
+    @Override 
+    public void run() {
         try {
+            serverSocket = new ServerSocket(port);
             socket = serverSocket.accept();
+            System.out.println("Conectado");
             output = new PrintWriter(socket.getOutputStream(), true);
         } catch(IOException e) {
             System.err.println(e);
         }
     }
-    
-    @Override 
-    public void run() {
-        createConnection();
-    }
 
     @Override
     public void updateTime(String time) {
         if (socket != null)
-            output.println(time);
-    }
-    
-    public static void main(String[] args) {
-        Server server = new Server();
-        server.start();
+            output.println(time + ":" + clock.speed);
     }
 }

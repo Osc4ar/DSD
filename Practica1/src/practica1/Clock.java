@@ -8,7 +8,6 @@ package practica1;
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
 */
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.util.Calendar;
 public class Clock extends Thread {
     ArrayList<ClockListener> listeners;
     int sec, min, hours;
-    volatile double speed = 1;
+    public volatile double speed = 1;
     String time;
     GregorianCalendar calendar;
     SimpleDateFormat ft;
@@ -43,7 +42,7 @@ public class Clock extends Thread {
     }
     
     public void sendUpdate() {
-       String time = getFormattedTime();
+       time = getFormattedTime();
        for(ClockListener listener : listeners)
             listener.updateTime(time);
     }
@@ -52,6 +51,15 @@ public class Clock extends Thread {
         calendar.set(Calendar.HOUR_OF_DAY, hours);
         calendar.set(Calendar.MINUTE, min);
         calendar.set(Calendar.SECOND, sec);
+    }
+    
+    public void setTime(String time) {
+        String[] clockData = time.split(":");
+        int hours = Integer.parseInt(clockData[0]);
+        int min = Integer.parseInt(clockData[1]);
+        int sec = Integer.parseInt(clockData[2]);
+        this.speed = Double.parseDouble(clockData[3]);
+        setTime(hours, min, sec);
     }
     
     public String getFormattedTime() {
