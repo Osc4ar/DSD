@@ -7,6 +7,7 @@ package practica2;
 
 import practica1.Clock;
 import practica1.ClockLabel;
+import practica1.EditClock;
 
 /**
  *
