@@ -194,6 +194,7 @@ public class ServerUI extends javax.swing.JFrame {
     }//GEN-LAST:event_editButton2ActionPerformed
 
     private void editButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButton3ActionPerformed
+        System.out.println("Aqui");
         new EditClock(clocks[3]);
     }//GEN-LAST:event_editButton3ActionPerformed
 
