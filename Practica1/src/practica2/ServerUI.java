@@ -186,28 +186,30 @@ public class ServerUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void editButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButton1ActionPerformed
+        threads[0].enableConnection = false;
         new EditClock(clocks[0]);
     }//GEN-LAST:event_editButton1ActionPerformed
 
     private void editButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButton2ActionPerformed
+        threads[1].enableConnection = false;
         new EditClock(clocks[1]);
     }//GEN-LAST:event_editButton2ActionPerformed
 
     private void editButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButton3ActionPerformed
-        System.out.println("Aqui");
-        new EditClock(clocks[3]);
+        threads[2].enableConnection = false;
+        new EditClock(clocks[2]);
     }//GEN-LAST:event_editButton3ActionPerformed
 
     private void sendButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButton1ActionPerformed
-        // TODO add your handling code here:
+        threads[0].enableConnection = true;
     }//GEN-LAST:event_sendButton1ActionPerformed
 
     private void sendButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButton2ActionPerformed
-        // TODO add your handling code here:
+        threads[1].enableConnection = true;
     }//GEN-LAST:event_sendButton2ActionPerformed
 
     private void sendButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButton3ActionPerformed
-        // TODO add your handling code here:
+        threads[2].enableConnection = true;
     }//GEN-LAST:event_sendButton3ActionPerformed
 
     /**

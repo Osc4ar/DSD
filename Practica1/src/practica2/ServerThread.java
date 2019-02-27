@@ -23,12 +23,14 @@ public class ServerThread extends Thread implements ClockListener {
     Clock clock;
     int port = 10000;
     int id;
+    boolean enableConnection;
     
     public ServerThread(int id, Clock clock) {
         this.id = id;
         this.port += this.id;
         this.clock = clock;
-        clock.addListener(this);
+        this.clock.addListener(this);
+        this.enableConnection = true;
     }
     
     @Override 
@@ -45,7 +47,7 @@ public class ServerThread extends Thread implements ClockListener {
 
     @Override
     public void updateTime(String time) {
-        if (socket != null)
+        if (socket != null && enableConnection)
             output.println(time + ":" + clock.speed);
     }
 }
