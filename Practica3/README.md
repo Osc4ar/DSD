@@ -1,0 +1,1 @@
+Para configurar los proyectos es necesario tener instalado NodeJS y los paquetes ExpressJS y Socket.IO

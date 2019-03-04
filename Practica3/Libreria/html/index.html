@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Libreria</title>
+</head>
+<body>
+  <div id="cover"></div>
+  <button type="submit">Nuevo libro</button>
+  <button type="submit">Nueva sesi&oacute;n</button>
+  <p id="clock">00:00:00</p>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const ip = location.host
+    const socket = io.connect(ip)
+    socket.on('time', (data) => {
+      clock = document.getElementById('clock')
+      clock.innerHTML = data['time']
+    })
+  </script>
+</body>
+</html>
