@@ -1,28 +1,25 @@
-const express = require('express')
-const cors = require('cors')
-const app = express()
-const http = require('http').Server(app)
+const express = require('express');
+const app = express();
+const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-const port = 3000
-
-app.use(cors())
+const port = 3000;
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/html/index.html')
-})
+});
 
 app.post('/bookManager', (req, res) => {
-  res.send('Un librote')
-})
+  res.send('Un librote');
+});
 
 app.post('/sessionManager', (req, res) => {
-  res.send('Una sesion')
-})
+  res.send('Una sesion');
+});
 
 io.on('connection', (socket) => {
   setInterval(() => sendTime(socket), 1000)
-})
+});
 
 function sendTime(socket) {
   currentDate = new Date()
@@ -37,4 +34,4 @@ function formatTime(currentDate) {
   return hours + ':' + minutes + ':' + seconds
 }
 
-http.listen(port, () => console.log('Libreria iniciada'))
+http.listen(port, () => console.log('Libreria iniciada'));
