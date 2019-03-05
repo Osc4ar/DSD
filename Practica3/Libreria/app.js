@@ -1,12 +1,23 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http);
 
 const port = 3000
 
+app.use(cors())
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/html/index.html')
+})
+
+app.post('/bookManager', (req, res) => {
+  res.send('Un librote')
+})
+
+app.post('/sessionManager', (req, res) => {
+  res.send('Una sesion')
 })
 
 io.on('connection', (socket) => {

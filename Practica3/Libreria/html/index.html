@@ -7,18 +7,38 @@
 </head>
 <body>
   <div id="cover"></div>
-  <button type="submit">Nuevo libro</button>
-  <button type="submit">Nueva sesi&oacute;n</button>
+  <button onclick="requestNewBook()">Nuevo libro</button>
+  <button onclick="requestNewSession()">Nueva sesi&oacute;n</button>
   <p id="clock">00:00:00</p>
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    const ip = location.host
-    const socket = io.connect(ip)
+    const host = location.host
+    const socket = io.connect(host)
     socket.on('time', (data) => {
       clock = document.getElementById('clock')
       clock.innerHTML = data['time']
     })
+
+    function sendRequest(server) {
+      const host = location.host
+      const xhttp = new XMLHttpRequest()
+      xhttp.onreadystatechange = () => {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById('cover').innerHTML = this.responseText
+        }
+      }
+      xhttp.open('POST', host + '/' + server)
+      xhttp.send()
+    }
+
+    function requestNewBook() {
+      sendRequest('bookManager')
+    }
+
+    function requestNewSession() {
+      sendRequest('sessionManager')
+    }
   </script>
 </body>
 </html>
