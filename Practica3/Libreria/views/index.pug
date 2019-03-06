@@ -4,10 +4,26 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible" content="ie=edge")
         title Libreria
     body
-        div#cover
-        button(onclick="requestNewBook()") Nuevo libro
-        button Salir
+        button#requestNewBook(onclick="requestNewBook()") Nuevo libro
         p#clock 00:00:00
+        div
+            table
+                tr
+                    td ISBN
+                    td#ISBN
+                tr
+                    td Nombre
+                    td#Nombre
+                tr
+                    td Autor
+                    td#Autor
+                tr
+                    td Editorial
+                    td#Editorial
+                tr
+                    td Precio
+                    td#Precio
+
 
         script(src="/socket.io/socket.io.js")
         script

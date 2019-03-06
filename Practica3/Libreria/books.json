@@ -1,0 +1,26 @@
+{
+    "library": [{
+        "ISBN": "978-843-03-0407-3",
+        "Nombre": "Don Quijote de la Mancha",
+        "Autor": "Miguel de Cervantes Saavedra",
+        "Editorial": "DEBOLSILLO",
+        "Precio": "$100.00",
+        "Portada": "quijote.png"
+    },
+    {
+        "ISBN": "978-843-03-0407-2",
+        "Nombre": "Moby-Dick",
+        "Autor": "Herman Melville",
+        "Editorial": "Trillas",
+        "Precio": "$120.00",
+        "Portada": "mobydick.png"
+    },
+    {
+        "ISBN": "978-607-14-1535-6",
+        "Nombre": "La Iliada",
+        "Autor": "Homero",
+        "Editorial": "EMU",
+        "Precio": "$50.00",
+        "Portada": "iliada.png"
+    }]
+}
