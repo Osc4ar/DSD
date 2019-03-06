@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <!--Import Google Icon Font-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reloj Digital 12 Horas con JavaScript</title>
+    <link rel="stylesheet" href="css/reloj.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"/>
     <link type="text/css" rel="stylesheet" href="css/styles.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700" rel="stylesheet">
 </head>
-
-<body class="bggrey">
+<body>
 <nav>
     <div class="nav-wrapper">
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i style="color:black;" class="material-icons">menu</i></a>
@@ -96,21 +95,34 @@
 
     </div>
 </div>
-<!--Import jQuery before materialize.js-->
+    <div class="wrap">
+        <div class="widget">
+            <!--<div class="fecha">
+                <p id="diaSemana" class="diaSemana"></p>
+                <p id="dia" class="dia"></p>
+                <p>de</p>
+                <p id="mes" class="mes"></p>
+                <p>del</p>
+                <p id="year" class="year"></p>
+            </div>-->
+            <!----------------------------------------->
+            <div class="reloj">
+                <p id="hora" class="hora"></p>
+                <p>:</p>
+                <p id="minutos" class="minutos"></p>
+                <p>:</p>
+                <div class="caja-segundos">
+                    <p id="ampm" class="ampm"></p>
+                    <p id="segundos" class="segundos"></p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<script src="js/reloj.js"></script>
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
 <script type="text/javascript" src="js/script1.js"></script>
-<script type="text/javascript" src="js/coordinador.js"></script>
-
+<script type="text/javascript" src="js/reloj.js"></script>
 </body>
-<script>
-                 var canvas = document.getElementById("micanvas");
-                 var ctx = canvas.getContext("2d");
-
-                 var img = new Image();
-                 img.src = "img/empty-box.png";
-                img.onload = function(){
-                  ctx.drawImage(img, 0, 0);
-                }
-</script>
 </html>

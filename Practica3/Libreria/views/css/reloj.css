@@ -1,0 +1,71 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body{
+    background-image: url(/fondo01.png);
+    background-size: cover;
+    color: #fff;
+    font-size: 16px;
+    display: -webkit-box;
+
+    display: flex;
+    height: 100vh;
+}
+.wrap{
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -ms-grid-row-align: center;
+    align-items: center;
+    margin: auto;
+    width: 80%;
+}
+.widget{
+    width: 50%;
+/*    margin: 2em;*/
+    margin: 2em auto;
+}
+.widget p{
+    display: inline-block;
+    line-height: 1em;
+        
+}
+
+.fecha{
+    font-family: 'Oswald', sans-serif;
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 0.3rem;
+    padding: 1em;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    
+}
+.reloj{
+    font-family: 'Oswald', sans-serif;
+    font-size: 4em;
+    text-align: center;
+    margin-bottom: 0.3rem;
+    padding: 1em;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    
+}
+.caja-segundos {
+    display:inline-block;  
+}
+.caja-segundos .segundos,
+.caja-segundos .ampm {
+    font-size: 2rem;
+    display: block;  
+}
+
+
+
+
