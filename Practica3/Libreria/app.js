@@ -5,8 +5,10 @@ const io = require('socket.io')(http);
 
 const port = 3000;
 
+app.set('view engine', 'pug');
+
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/html/index.html')
+  res.render('index');
 });
 
 app.post('/bookManager', (req, res) => {

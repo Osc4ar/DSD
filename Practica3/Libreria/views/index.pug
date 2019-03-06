@@ -1,0 +1,14 @@
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible" content="ie=edge")
+        title Libreria
+    body
+        div#cover
+        button(onclick="requestNewBook()") Nuevo libro
+        button Salir
+        p#clock 00:00:00
+
+        script(src="/socket.io/socket.io.js")
+        script
+            include js/index.js
