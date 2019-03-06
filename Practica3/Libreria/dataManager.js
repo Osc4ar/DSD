@@ -1,3 +1,5 @@
+const backup = require('./backup');
+
 let users = [];
 let sessions = [];
 let orders = [];
@@ -6,6 +8,7 @@ let userIDs = [];
 
 function insertUser(id, ip) {
     users.push({"id": id, "ip": ip});
+    backup.sendUser(id, ip);
 }
 
 function insertSession(id, user) {
@@ -14,16 +17,6 @@ function insertSession(id, user) {
 
 function insertOrder(user, session, isbn) {
     orders.push({"user": user, "session": session, "isbn": isbn, "date": new Date()});
-}
-
-function getActiveSession(user) {
-    let id = 0;
-    for (let session of sessions) {
-        if (session.user == user && session.active == true) {
-            id = session.id;
-        }
-    }
-    return id;
 }
 
 function deactivateSession(id) {
@@ -43,12 +36,32 @@ function newSession(user) {
 function getActiveSessionOrders(user) {
     userOrders = []
     session = getActiveSession(user);
-    for (let order of orders) {
+    for (const order of orders) {
         if (order.user == user && order.session == session) {
             userOrders.push(order);
         }
     }
     return userOrders;
+}
+
+function getActiveSession(user) {
+    let id = 0;
+    for (const session of sessions) {
+        if (session.user == user && session.active == true) {
+            id = session.id;
+        }
+    }
+    return id;
+}
+
+function getAllActiveUsers() {
+    let activeUsersID = [];
+    for (const session of sessions) {
+        if (session.active) {
+            activeUsersID.push(session.user);
+        }
+    }
+    return activeUsersID;
 }
 
 function getUserID(ip) {
@@ -61,14 +74,34 @@ function getUserID(ip) {
     return id;
 }
 
+function getLastOrder(user) {
+    let lastOrder = {};
+    for (const order of orders.reverse()) {
+        if (order.user == user) {
+            lastOrder = order;
+        }
+    }
+    return lastOrder;
+}
+
+function getCoordinadorView() {
+    activeUsers = getAllActiveUsers();
+    lastOrders = [];
+    for (const user of activeUsers) {
+        lastOrders.push(getLastOrder(user));
+    }
+    return lastOrders;
+}
+
 module.exports = {
     insertUser: insertUser,
     insertSession: insertSession,
+    insertOrder: insertOrder,
     newSession: newSession,
     getActiveSession: getActiveSession,
     getActiveSessionOrders: getActiveSessionOrders,
     getUserID: getUserID,
-    insertOrder: insertOrder,
+    getCoordinadorView: getCoordinadorView,
     users: users,
     userIDs: userIDs,
     sessions: sessions,

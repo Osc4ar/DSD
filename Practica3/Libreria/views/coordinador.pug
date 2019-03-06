@@ -1,0 +1,15 @@
+html(lang="es")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible" content="ie=edge")
+        title Coordinador
+    body
+        div.container
+            each order in orders
+                div.user
+                    button(id=order.user, onClick="newSession(this.id)") Reiniciar
+                    p ID de Usuario: #{order.user}
+                    p Sesi&oacute;n activa: #{order.session}
+                    p Leyendo: #{order.isbn}
+        script
+            include js/coordinador.js

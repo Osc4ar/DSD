@@ -11,7 +11,26 @@ app.set('view engine', 'pug');
 
 app.get('/', (req, res) => {
   initUserData(req.ip);
-  res.render('index');
+  userID = dataManager.getUserID(req.ip);
+  res.render('index', {
+    session: dataManager.getActiveSession(userID)
+  });
+});
+
+app.get('/coordinador', (req, res) => {
+  if (req.ip === '::1') {
+    res.render('coordinador', {
+      orders: dataManager.getCoordinadorView()
+    });
+  } else {
+    res.send('Acceso no autorizado');
+  }
+});
+
+app.get('/coordinador/newSession', (req, res) => {
+  userID = req.query.id;
+  dataManager.newSession(userID);
+  res.send('' + dataManager.getActiveSession(userID));
 });
 
 app.post('/bookManager', (req, res) => {
@@ -57,8 +76,6 @@ function initUserData(ip) {
   }
   dataManager.userIDs.push(id);
   dataManager.insertSession(1, id);
-  console.log(dataManager.users);
-  console.log(dataManager.sessions);
 }
 
 function libraryContains(library, isbn) {
