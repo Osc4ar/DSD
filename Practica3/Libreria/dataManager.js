@@ -1,48 +1,46 @@
+let mysql = require ('mysql');
+let config = require ('./config.js');
+
+let connection = mysql.createConnection(config);
 const backup = require('./backup');
 
-let users = [];
-let sessions = [];
-let orders = [];
-
-let userIDs = [];
 
 function insertUser(id, ip) {
-    users.push({"id": id, "ip": ip});
-    backup.sendUser(id, ip);
+    let sql =   "INSERT INTO usuario (idUsuario, IP) values (id , ip )";
+
+    connection.query(sql);
+    connection.end();
 }
 
-function insertSession(id, user) {
-    sessions.push({"id": id, "user": user, "active": true});
+function insertSession(id, user){
+    let sql =   "INSERT INTO sesion values (id, user)";
+                 
+
 }
 
-function insertOrder(user, session, isbn) {
-    orders.push({"user": user, "session": session, "isbn": isbn, "date": new Date()});
+function insertOrder (user, session, isbn){
+    let sql =   "INSERT INTO pedido values (idPedido, date, isbn, user, idSesion)";
+
 }
 
-function deactivateSession(id) {
-    for (let session of sessions) {
-        if (session.id == id && session.active == true) {
-            session.active = false;
-        }
-    }
-}
 
 function newSession(user) {
     activeSessionID = getActiveSession(user);
     deactivateSession(activeSessionID);
-    sessions.push({"id": activeSessionID + 1, "user": user, "active": true});
+    let sql = "INSERT INTO sesion values (activeSessionID + 1, user )"
 }
 
-function getActiveSessionOrders(user) {
-    userOrders = []
-    session = getActiveSession(user);
-    for (const order of orders) {
-        if (order.user == user && order.session == session) {
-            userOrders.push(order);
-        }
-    }
-    return userOrders;
+
+function getActiveSession(user){
+    let sql =  "SELECT idSesion WHERE idUsuario =  user";
+   
 }
+
+function getActiveSessionOrders(user){
+
+}
+
+
 
 function getActiveSession(user) {
     let id = 0;
@@ -92,6 +90,7 @@ function getCoordinadorView() {
     }
     return lastOrders;
 }
+
 
 module.exports = {
     insertUser: insertUser,
