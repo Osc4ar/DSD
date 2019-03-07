@@ -20,34 +20,52 @@
         <ul class="right hide-on-med-and-down">
             <li><a class="font12 altas" href="#!"><img style="padding:10px; width:60px;" width="50" class="left" src="img/user.png">Coordinador</a></li>
             <li style="border-right:1px solid #ebebeb;border-left:1px solid #ebebeb"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/restart.png">Reiniciar</a></li>
-            <li style="border-right:1px solid #ebebeb;"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/logout.png">Cerrar Sesión</a></li>
+            <li style="border-right:1px solid #ebebeb;"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/logout.png">Salir</a></li>
         </ul>
         <ul class="side-nav" id="mobile-demo">
             <li><a class="dropdown-button font12 altas" href="#!" data-activates="dropdown2"><img class="left" src="img/General.png">Coordinador</a></li>
             <li style="border-right:1px solid #ebebeb;border-left:1px solid #ebebeb"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/restart.png">Reiniciar</a></li>
-            <li style="border-right:1px solid #ebebeb;"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/logout.png">Cerrar Sesión</a></li>
+            <li style="border-right:1px solid #ebebeb;"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/logout.png">Salir</a></li>
         </ul>
     </div>
 </nav>
 <div class="container" style="margin-top:50px!important;">
     <div class="row">
-        <div class="col s12 m6 l6 xl6 white" style="padding:0px">
+        <div class="col s12 m6 l6 xl6 white" style="padding:0px;height:307px;">
             <p class="left-align white-text indigo lighten-3 altas font11" style="padding-left: 12px;margin-bottom: 20px; margin-top:0px;padding-top:5px;padding-bottom: 5px;margin-bottom: 0px;"><strong>Administrador</strong></p>
             <div class="col s12 m6 l6 xl6">
-                <canvas height="300px" width="300px" id="micanvas" style="padding-left:10px;"></canvas>
+                <canvas height="250px" width="250px" id="micanvas" style="padding-left:10px;"></canvas>
             </div>
-            <div class="col s12 m6 l6 xl6 font20">
-                <div class="row" style="margin-top:60px">
-                    <p>ID Usuario:<span id="#{order.user}"></span></p>
-                    <p>ID Pedido:<span></span></p>
-                    <p>ID Libro: <span id="#{order.isbn}"></span></p>
-                    <p>ID Sesion: <span id="#{order.session}"></span></p>
-                </div>
+            <div class="col s12 m6 l6 xl6" style="padding-top: 40px;">
+                <table class="highlight">
+                    <thead style="border-bottom: 0px!important;">
+                    </thead>
+
+                    <tbody class="font12 altas">
+                    <tr>
+                        <td><b>ID Usuario:</b></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><b>ID Pedido:</b></td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td><b>ID Libro:</b></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><b>ID Sesión:</b></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="col s12 m6 l6 xl6">
             <p class="left-align white-text indigo lighten-3 altas font11" style="padding-left: 12px;margin-bottom: 20px; margin-top:0px;padding-top:5px;padding-bottom: 5px;margin-bottom: 0px;"><strong>Pedidos</strong></p>
-            <div class="row white" style="padding-left:20px;margin:0px;height:307px; overflow-y:scroll;">
+            <div class="row white" style="padding-left:20px;margin:0px;height:280px; overflow-y:scroll;">
                 <table class="highlight">
                     <thead>
                     <tr class="altas font12">
@@ -108,7 +126,7 @@
                  var ctx = canvas.getContext("2d");
 
                  var img = new Image();
-                 img.src = "img/empty-box.png";
+                 img.src = "img/unnamed.png";
                 img.onload = function(){
                   ctx.drawImage(img, 0, 0);
                 }
