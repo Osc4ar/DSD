@@ -1,52 +1,41 @@
-var actualizarHora = function(){
+$(function(){
+    var actualizarHora = function(){
+        var fecha = new Date(),
+            hora = fecha.getHours(),
+            minutos = fecha.getMinutes(),
+            segundos = fecha.getSeconds(),
+            diaSemana = fecha.getDay(),
+            dia = fecha.getDate(),
+            mes = fecha.getMonth(),
+            anio = fecha.getFullYear(),
+            ampm;
 
-    var fecha = new Date(),
-        horas = fecha.getHours(),
-        minutos = fecha.getMinutes(),
-        amPm,
-        segundos = fecha.getSeconds(),
-        diaDeSemana = fecha.getDay(),
-        dia = fecha.getDate(),
-        mes = fecha.getMonth(),
-        anio = fecha.getFullYear();
+        var $pHoras = $("#horas"),
+            $pSegundos = $("#segundos"),
+            $pMinutos = $("#minutos"),
+            $pAMPM = $("#ampm"),
+            $pDiaSemana = $("#diaSemana"),
+            $pDia = $("#dia"),
+            $pMes = $("#mes"),
+            $pAnio = $("#anio");
+        var semana = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
+        var meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-        var NombreDeSemana = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
-        var NombreDeMes = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Setiembre','Octubre','Noviembre','Diciembre'];
+        $pDiaSemana.text(semana[diaSemana]);
+        $pDia.text(dia);
+        $pMes.text(meses[mes]);
+        $pAnio.text(anio);
+        if(hora == 0){
+            hora = 12;
+        }
+        if(hora<10){$pHoras.text("0"+hora)}else{$pHoras.text(hora)};
+        if(minutos<10){$pMinutos.text("0"+minutos)}else{$pMinutos.text(minutos)};
+        if(segundos<10){$pSegundos.text("0"+segundos)}else{$pSegundos.text(segundos)};
+        $pAMPM.text(ampm);
 
-            var pHoras = document.getElementById("hora"),
-            pMinutos = document.getElementById("minutos"),
-            pAmPm = document.getElementById("ampm"),
-            pSegundos = document.getElementById("segundos"),
-            pDiaDeSemana = document.getElementById("diaSemana"),
-            pDia = document.getElementById("dia"),
-            pMes = document.getElementById("mes"),
-            pAnio = document.getElementById("year");
-
-  //  if(horas > 12){
-  //      amPm = "PM";
-  //  }else{
-  //      amPm = "AM";
-  //  }
-
-    if(minutos < 10){
-        minutos = "0" + minutos;
-    }
-    if(segundos < 10){
-            segundos = "0" + segundos;
-    }
-
-
-        pHoras.textContent = horas,
-        pMinutos.textContent = minutos,
-        pSegundos.textContent = segundos,
-        pAmPm.textContent = amPm,
-        pDiaDeSemana.textContent = NombreDeSemana[diaDeSemana],
-        pDia.textContent = dia,
-        pMes.textContent = NombreDeMes[mes],
-        pAnio.textContent = anio;
+    };
 
 
-}
-
-actualizarHora();
-setInterval(actualizarHora,1000);
+    actualizarHora();
+    var intervalo = setInterval(actualizarHora,1000);
+});

@@ -31,7 +31,10 @@ nav .nav-wrapper{
 .bggrey{
     background-color: #ebebeb;
 }
-
+.font12White{
+    font-size: 12px!important;
+    color:#ffffff;
+}
 .p1{
     padding-top: 20px;
     padding-bottom: 20px; 

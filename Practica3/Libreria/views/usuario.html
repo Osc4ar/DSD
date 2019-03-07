@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Reloj Digital 12 Horas con JavaScript</title>
+    <title>Usuario</title>
     <link rel="stylesheet" href="css/reloj.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
@@ -17,112 +17,96 @@
     <div class="nav-wrapper">
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i style="color:black;" class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
-            <li><a class="font12 altas" href="#!"><img style="padding:10px; width:60px;" width="50" class="left" src="img/user.png">Coordinador</a></li>
+            <li><a class="font12 altas" href="#!"><img style="padding:10px; width:60px;" width="50" class="left" src="img/user.png">Usuario</a></li>
             <li style="border-right:1px solid #ebebeb;border-left:1px solid #ebebeb"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/restart.png">Reiniciar</a></li>
-            <li style="border-right:1px solid #ebebeb;"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/logout.png">Cerrar Sesión</a></li>
+            <li style="border-right:1px solid #ebebeb;"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/logout.png">Salir</a></li>
         </ul>
         <ul class="side-nav" id="mobile-demo">
             <li><a class="dropdown-button font12 altas" href="#!" data-activates="dropdown2"><img class="left" src="img/General.png">Coordinador</a></li>
             <li style="border-right:1px solid #ebebeb;border-left:1px solid #ebebeb"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/restart.png">Reiniciar</a></li>
-            <li style="border-right:1px solid #ebebeb;"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/logout.png">Cerrar Sesión</a></li>
+            <li style="border-right:1px solid #ebebeb;"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/logout.png">Salir</a></li>
         </ul>
     </div>
 </nav>
 <div class="container" style="margin-top:50px!important;">
     <div class="row">
-        <div class="col s12 m6 l6 xl6 white" style="padding:0px">
-            <p class="left-align white-text indigo lighten-3 altas font11" style="padding-left: 12px;margin-bottom: 20px; margin-top:0px;padding-top:5px;padding-bottom: 5px;margin-bottom: 0px;"><strong>Administrador</strong></p>
-            <div class="col s12 m6 l6 xl6">
-                <canvas height="300px" width="300px" id="micanvas" style="padding-left:10px;"></canvas>
-            </div>
-            <div class="col s12 m6 l6 xl6 font20">
-                <div class="row" style="margin-top:60px">
-                    <p>ID Usuario:<span id="#{order.user}"></span></p>
-                    <p>ID Pedido:<span></span></p>
-                    <p>ID Libro: <span id="#{order.isbn}"></span></p>
-                    <p>ID Sesion: <span id="#{order.session}"></span></p>
+            <div class="col s12 m6 l6 xl6 " style="padding:0px">
+                <div class="col s12 m6 l6 xl6" style="padding-top: 10px;padding-left: 10px;">
+
+                </div>
+                <div class="col s12 m6 l6 xl6 font20">
+                    <div class="row" style="margin-bottom:5px;">
+                        <button class="btn waves-effect waves-light indigo font12White right" type="submit" name="action">Pedir Libro
+                            <i class="material-icons right">add</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col s12 font12 altas white" style="padding: 10px;height: 300px;">
+                    <table class="highlight">
+                        <thead>
+                        <tr class="altas font12">
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody class="font12 altas">
+                        <tr>
+                            <td><b>ISBN:</b></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>Nombre:</b></td>
+                            <td></td>
+
+                        </tr>
+                        <tr>
+                            <td><b>Autor:</b></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>Editorial:</b></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>Precio:</b></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
         <div class="col s12 m6 l6 xl6">
-            <p class="left-align white-text indigo lighten-3 altas font11" style="padding-left: 12px;margin-bottom: 20px; margin-top:0px;padding-top:5px;padding-bottom: 5px;margin-bottom: 0px;"><strong>Pedidos</strong></p>
-            <div class="row white" style="padding-left:20px;margin:0px;height:307px; overflow-y:scroll;">
-                <table class="highlight">
-                    <thead>
-                    <tr class="altas font12">
-                        <th></th>
-                        <th>ID pedido</th>
-                        <th>Hora</th>
-                        <th>Título del libro</th>
-                    </tr>
-                    </thead>
-
-                    <tbody class="font12 altas">
-                    <tr>
-                        <td><img src="img/lector.png" width="50" style="vertical-align:middle;padding-left:10px;"></td>
-                        <td>0001</td>
-                        <td>00:00:00</td>
-                        <td>Titulo del libro</td>
-                    </tr>
-                    <tr>
-                        <td><img src="img/lector.png" width="50" style="vertical-align:middle;padding-left:10px;"></td>
-                        <td>0002</td>
-                        <td>00:00:00</td>
-                        <td>Titulo del libro</td>
-                    </tr>
-                    <tr>
-                        <td><img src="img/lector.png" width="50" style="vertical-align:middle;padding-left:10px;"></td>
-                        <td>0003</td>
-                        <td>00:00:00</td>
-                        <td>Titulo del libro</td>
-                    </tr>
-                    <tr>
-                        <td><img src="img/lector.png" width="50" style="vertical-align:middle;padding-left:10px;"></td>
-                        <td>0003</td>
-                        <td>00:00:00</td>
-                        <td>Titulo del libro</td>
-                    </tr>
-                    <tr>
-                        <td><img src="img/lector.png" width="50" style="vertical-align:middle;padding-left:10px;"></td>
-                        <td>0003</td>
-                        <td>00:00:00</td>
-                        <td>Titulo del libro</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="widget">
+                    <div class="fecha">
+                        <p id="diaSemana" class="diaSemana"></p>
+                        <p id="dia" class="dia"></p>
+                        <p>de</p>
+                        <p id="mes" class="mes"></p>
+                        <p>del</p>
+                        <p id="anio" class="anio"></p>
+                    </div>
+                    <div class="reloj">
+                        <p id="horas" class="horas"></p>
+                        <p>:</p>
+                        <p id="minutos" class="minutos"></p>
+                        <p>:</p>
+                        <div class="cajaSegundos">
+                            <p id="ampm" class="ampm"></p>
+                            <p id="segundos" class="segundos"></p>
+                        </div>
+                    </div>
             </div>
         </div>
 
     </div>
 </div>
-    <div class="wrap">
-        <div class="widget">
-            <!--<div class="fecha">
-                <p id="diaSemana" class="diaSemana"></p>
-                <p id="dia" class="dia"></p>
-                <p>de</p>
-                <p id="mes" class="mes"></p>
-                <p>del</p>
-                <p id="year" class="year"></p>
-            </div>-->
-            <!----------------------------------------->
-            <div class="reloj">
-                <p id="hora" class="hora"></p>
-                <p>:</p>
-                <p id="minutos" class="minutos"></p>
-                <p>:</p>
-                <div class="caja-segundos">
-                    <p id="ampm" class="ampm"></p>
-                    <p id="segundos" class="segundos"></p>
-                </div>
 
-            </div>
-        </div>
-    </div>
 <script src="js/reloj.js"></script>
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
 <script type="text/javascript" src="js/script1.js"></script>
 <script type="text/javascript" src="js/reloj.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
 </body>
 </html>
