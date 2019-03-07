@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Usuario</title>
+    <link rel="stylesheet" href="css/reloj.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"/>
+    <link type="text/css" rel="stylesheet" href="css/styles.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700" rel="stylesheet">
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i style="color:black;" class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+            <li><a class="font12 altas" href="#!"><img style="padding:10px; width:60px;" width="50" class="left" src="img/user.png">Usuario</a></li>
+            <li style="border-right:1px solid #ebebeb;border-left:1px solid #ebebeb"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/restart.png">Reiniciar</a></li>
+            <li style="border-right:1px solid #ebebeb;"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/logout.png">Salir</a></li>
+        </ul>
+        <ul class="side-nav" id="mobile-demo">
+            <li><a class="dropdown-button font12 altas" href="#!" data-activates="dropdown2"><img class="left" src="img/General.png">Coordinador</a></li>
+            <li style="border-right:1px solid #ebebeb;border-left:1px solid #ebebeb"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/restart.png">Reiniciar</a></li>
+            <li style="border-right:1px solid #ebebeb;"><a class="font12 altas" href="#"><img style="padding:10px; width:60px;" width="50" class="left" src="img/logout.png">Salir</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container" style="margin-top:50px!important;">
+    <div class="row">
+            <div class="col s12 m6 l6 xl6 " style="padding:0px">
+                <div class="col s12 m6 l6 xl6" style="padding-top: 10px;padding-left: 10px;">
+
+                </div>
+                <div class="col s12 m6 l6 xl6 font20">
+                    <div class="row" style="margin-bottom:5px;">
+                        <button class="btn waves-effect waves-light indigo font12White right" type="submit" name="action">Pedir Libro
+                            <i class="material-icons right">add</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col s12 font12 altas white" style="padding: 10px;height: 300px;">
+                    <table class="highlight">
+                        <thead>
+                        <tr class="altas font12">
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody class="font12 altas">
+                        <tr>
+                            <td><b>ISBN:</b></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>Nombre:</b></td>
+                            <td></td>
+
+                        </tr>
+                        <tr>
+                            <td><b>Autor:</b></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>Editorial:</b></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>Precio:</b></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <div class="col s12 m6 l6 xl6">
+            <div class="widget">
+                    <div class="fecha">
+                        <p id="diaSemana" class="diaSemana"></p>
+                        <p id="dia" class="dia"></p>
+                        <p>de</p>
+                        <p id="mes" class="mes"></p>
+                        <p>del</p>
+                        <p id="anio" class="anio"></p>
+                    </div>
+                    <div class="reloj">
+                        <p id="horas" class="horas"></p>
+                        <p>:</p>
+                        <p id="minutos" class="minutos"></p>
+                        <p>:</p>
+                        <div class="cajaSegundos">
+                            <p id="ampm" class="ampm"></p>
+                            <p id="segundos" class="segundos"></p>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="col s12 m6 l6 xl6">
+            <!-- Modal Trigger Boton es provisional, se llama al la estructura del modal1 cuando ya no hay libros -->
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+
+            <!-- Modal Structure -->
+            <div id="modal1" class="modal">
+                <div class="modal-content black-text">
+                    <div class="col s3">
+                        <img src="img/alerta.png">
+                    </div>
+                    <div class="col s9" style="padding-bottom: 80px;padding-top: 20px;">
+                        <h4>No hay libros disponibles</h4>
+                        <p>La sesión ha sido concluida, puede iniciar una nueva sesión o salir.</p>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-blue btn-flat">Salir</a>
+                    <a href="login.html" class="modal-close waves-effect waves-blue btn-flat">Nueva Sesión</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="js/reloj.js"></script>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script type="text/javascript" src="js/script1.js"></script>
+<script type="text/javascript" src="js/reloj.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>
