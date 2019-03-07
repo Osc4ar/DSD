@@ -3,7 +3,7 @@ const http = require('http');
 function sendRequest(route) {
     const options = {
         host: '127.0.0.1',
-        port: '3001',
+        port: '6666',
         path: route,
         method: 'GET',
         headers: {
