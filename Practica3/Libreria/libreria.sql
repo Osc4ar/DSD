@@ -33,6 +33,7 @@ SET character_set_client = utf8;
  1 AS `idPedido`,
  1 AS `fecha`,
  1 AS `idUsuario`,
+ 1 AS `IP`,
  1 AS `idSesion`*/;
 SET character_set_client = @saved_cs_client;
 
@@ -117,7 +118,7 @@ CREATE TABLE `Pedido` (
   CONSTRAINT `Pedido_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario` (`idUsuario`),
   CONSTRAINT `Pedido_ibfk_2` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario` (`idUsuario`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Pedido_ibfk_3` FOREIGN KEY (`ISBN`) REFERENCES `Libro` (`ISBN`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +127,7 @@ CREATE TABLE `Pedido` (
 
 LOCK TABLES `Pedido` WRITE;
 /*!40000 ALTER TABLE `Pedido` DISABLE KEYS */;
-INSERT INTO `Pedido` VALUES (1,'2019-03-08 04:10:36','9788415717843','Osc4ar',1),(2,'2019-03-08 07:31:35','9788441405295','Osc4ar',1),(7,'2019-03-08 08:09:43','0','Osc4ar',1),(8,'2019-03-08 08:29:37','9788415937548','Osc4ar',1),(37,'2019-03-10 09:23:48','0','Coordinador',2),(38,'2019-03-10 09:23:51','9788415717843','Osc4ar',2),(39,'2019-03-10 09:23:55','9788441405295','Osc4ar',2),(40,'2019-03-10 09:23:57','9788415937548','Osc4ar',2),(41,'2019-03-10 09:23:58','0','Osc4ar',3),(42,'2019-03-10 09:25:32','9788441405295','Osc4ar',3),(43,'2019-03-10 09:25:43','9788415717843','Osc4ar',3),(44,'2019-03-10 09:28:21','0','Coordinador',4),(45,'2019-03-10 09:28:26','9788415717843','Osc4ar',4),(46,'2019-03-10 09:45:21','9788441405295','Osc4ar',4),(47,'2019-03-10 09:51:00','9788415937548','Osc4ar',4),(48,'2019-03-10 09:51:09','0','Osc4ar',5),(49,'2019-03-10 09:57:17','9788415937548','Osc4ar',5),(50,'2019-03-10 09:57:41','9788415717843','Osc4ar',5),(51,'2019-03-10 09:57:48','9788441405295','Osc4ar',5),(52,'2019-03-10 09:57:51','0','Osc4ar',6),(53,'2019-03-10 09:58:58','9788415937548','Osc4ar',6),(54,'2019-03-10 09:59:09','9788441405295','Osc4ar',6),(55,'2019-03-10 09:59:16','9788415717843','Osc4ar',6),(56,'2019-03-10 09:59:17','0','Osc4ar',7);
+INSERT INTO `Pedido` VALUES (1,'2019-03-08 04:10:36','9788415717843','Osc4ar',1),(2,'2019-03-08 07:31:35','9788441405295','Osc4ar',1),(7,'2019-03-08 08:09:43','0','Osc4ar',1),(8,'2019-03-08 08:29:37','9788415937548','Osc4ar',1),(37,'2019-03-10 09:23:48','0','Coordinador',2),(38,'2019-03-10 09:23:51','9788415717843','Osc4ar',2),(39,'2019-03-10 09:23:55','9788441405295','Osc4ar',2),(40,'2019-03-10 09:23:57','9788415937548','Osc4ar',2),(41,'2019-03-10 09:23:58','0','Osc4ar',3),(42,'2019-03-10 09:25:32','9788441405295','Osc4ar',3),(43,'2019-03-10 09:25:43','9788415717843','Osc4ar',3),(44,'2019-03-10 09:28:21','0','Coordinador',4),(45,'2019-03-10 09:28:26','9788415717843','Osc4ar',4),(46,'2019-03-10 09:45:21','9788441405295','Osc4ar',4),(47,'2019-03-10 09:51:00','9788415937548','Osc4ar',4),(48,'2019-03-10 09:51:09','0','Osc4ar',5),(49,'2019-03-10 09:57:17','9788415937548','Osc4ar',5),(50,'2019-03-10 09:57:41','9788415717843','Osc4ar',5),(51,'2019-03-10 09:57:48','9788441405295','Osc4ar',5),(52,'2019-03-10 09:57:51','0','Osc4ar',6),(53,'2019-03-10 09:58:58','9788415937548','Osc4ar',6),(54,'2019-03-10 09:59:09','9788441405295','Osc4ar',6),(55,'2019-03-10 09:59:16','9788415717843','Osc4ar',6),(56,'2019-03-10 09:59:17','0','Osc4ar',7),(57,'2019-03-10 18:07:21','9788415937548','Osc4ar',7),(58,'2019-03-10 19:00:45','0','Coordinador',8),(59,'2019-03-10 19:11:10','9788441405295','Osc4ar',8),(60,'2019-03-10 19:23:19','9788415717843','Osc4ar',8);
 /*!40000 ALTER TABLE `Pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,7 +179,7 @@ CREATE TABLE `Usuario` (
 
 LOCK TABLES `Usuario` WRITE;
 /*!40000 ALTER TABLE `Usuario` DISABLE KEYS */;
-INSERT INTO `Usuario` VALUES ('Coordinador',':1'),('Osc4ar','192.168.1.44');
+INSERT INTO `Usuario` VALUES ('Coordinador',':1'),('Osc4ar','::1');
 /*!40000 ALTER TABLE `Usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -195,7 +196,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `Coordinador` AS select `L`.`ISBN` AS `ISBN`,`L`.`Nombre` AS `Nombre`,`L`.`Autor` AS `Autor`,`L`.`Editorial` AS `Editorial`,`L`.`Precio` AS `Precio`,`L`.`Portada` AS `Portada`,`P`.`idPedido` AS `idPedido`,`P`.`fecha` AS `fecha`,`P`.`idUsuario` AS `idUsuario`,`P`.`idSesion` AS `idSesion` from (`Libro` `L` join `Pedido` `P`) where ((`L`.`ISBN` = `P`.`ISBN`) and (`P`.`ISBN` <> '0')) */;
+/*!50001 VIEW `Coordinador` AS select `L`.`ISBN` AS `ISBN`,`L`.`Nombre` AS `Nombre`,`L`.`Autor` AS `Autor`,`L`.`Editorial` AS `Editorial`,`L`.`Precio` AS `Precio`,`L`.`Portada` AS `Portada`,`P`.`idPedido` AS `idPedido`,`P`.`fecha` AS `fecha`,`P`.`idUsuario` AS `idUsuario`,`U`.`IP` AS `IP`,`P`.`idSesion` AS `idSesion` from ((`Libro` `L` join `Pedido` `P`) join `Usuario` `U`) where ((`L`.`ISBN` = `P`.`ISBN`) and (`U`.`idUsuario` = `P`.`idUsuario`) and (`L`.`ISBN` <> '0')) order by `P`.`fecha` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -281,4 +282,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-10 11:43:48
+-- Dump completed on 2019-03-10 13:29:06
