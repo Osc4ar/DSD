@@ -11,24 +11,6 @@ body {
     font-size: 16px;
     color: #fff;
 }
-/*.contenedor {
-    width: 90%;
-    height: 100%;
-    position: relative;
-    max-width: 1000px;
-    margin: auto;
-    background: #ccc;
-}
-.widget {
-    width: 40%;
-    height: 40%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-}*/
 .widget p {
     display: inline-block;
     line-height: 1em;

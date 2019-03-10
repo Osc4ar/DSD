@@ -1,4 +1,4 @@
-function newSession(id) {
+function newSession() {
     const host = location.host;
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -11,6 +11,6 @@ function newSession(id) {
         }
       }
     };
-    xhttp.open('GET', 'http://' + host + '/coordinador/newSession?id=' + id);
+    xhttp.open('GET', 'http://' + host + '/sessionManager?username=Coordinador');
     xhttp.send();
 }

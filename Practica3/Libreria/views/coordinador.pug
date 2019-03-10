@@ -5,11 +5,11 @@ html(lang="es")
         title Coordinador
     body
         div.container
+            button(onClick="newSession()") Reiniciar
             each order in orders
-                div.user
-                    button(id=order.user, onClick="newSession(this.id)") Reiniciar
-                    p ID de Usuario: #{order.user}
-                    p Sesi&oacute;n activa: #{order.session}
-                    p Leyendo: #{order.isbn}
-        script
-            include js/coordinador.js
+                if order.ISBN != '0'
+                    div.user
+                        p ID de Usuario: #{order.idUsuario}
+                        p Sesi&oacute;n activa: #{order.idSesion}
+                        p Leyendo: #{order.ISBN}
+        script(src="public/js/coordinador.js")

@@ -6,6 +6,7 @@ socket.on('time', (data) => {
 });
 
 function sendRequest(server) {
+  const username = 'username=' + document.getElementById('username').value;
   const host = location.host;
   const xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
@@ -14,16 +15,15 @@ function sendRequest(server) {
       if (!isNaN(response)) {
         window.alert('Sesión '+ response + ' iniciada');
       } else {
-        const book = JSON.parse(this.responseText);
+        const book = JSON.parse(response);
+        parseBook(book);
         if (book.ended === true) {
           sessionEnded();
-        } else {
-          parseBook(book);
         }
       }
     }
   };
-  xhttp.open('POST', 'http://' + host + '/' + server);
+  xhttp.open('GET', 'http://' + host + '/' + server + '?' + username, true);
   xhttp.send();
 }
 
@@ -35,17 +35,8 @@ function parseBook(book) {
   document.getElementById('Precio').innerHTML = book.Precio;
 }
 
-function clearBook() {
-  document.getElementById('ISBN').innerHTML = '';
-  document.getElementById('Nombre').innerHTML = '';
-  document.getElementById('Autor').innerHTML = '';
-  document.getElementById('Editorial').innerHTML = '';
-  document.getElementById('Precio').innerHTML = '';
-}
-
 function sessionEnded() {
-  clearBook();
-  if(window.confirm("Ya no hay más libros.\n¿Iniciar nueva sesión?")) {
+  if(window.confirm("Este es el último libro.\n¿Iniciar nueva sesión?")) {
     requestNewSession();
   } else {
     document.getElementById('requestNewBook').disabled = true;

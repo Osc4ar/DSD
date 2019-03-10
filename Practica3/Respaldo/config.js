@@ -2,7 +2,7 @@ let config = {
   host    : 'localhost',
   user    : 'root',
   password: 'potato',
-  database: 'libreria'
+  database: 'respaldo'
 };
  
 module.exports = config;

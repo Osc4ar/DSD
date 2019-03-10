@@ -20,10 +20,20 @@ function sendRequest(route) {
     req.end();
 }
 
-function sendUser(id, ip) {
-    sendRequest('/addUser?id=' + id + '&ip=' + ip);
+function sendUser(username, ip) {
+    sendRequest('/addUser?username=' + username + '&ip=' + ip);
+}
+
+function sendOrder(username, isbn) {
+    sendRequest('/addOrder?username=' + username + '&isbn=' + isbn);
+}
+
+function sendNewSessionOrder(username, session) {
+    sendRequest('/addNewSessionOrder?username=' + username + '&session=' + session);
 }
 
 module.exports = {
-    sendUser: sendUser
+    sendUser: sendUser,
+    sendOrder: sendOrder,
+    sendNewSessionOrder: sendNewSessionOrder
 }

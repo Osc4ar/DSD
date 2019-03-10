@@ -13,7 +13,7 @@ CREATE TABLE Libro (
 
 
 CREATE TABLE Usuario (
-  idUsuario INT NOT NULL,
+  idUsuario INT NOT NULL AUTO_INCREMENT,
   IP VARCHAR(45) NULL,
   PRIMARY KEY (idUsuario));
 
@@ -22,20 +22,20 @@ CREATE TABLE Usuario (
 -- Table `mydb`.`Sesión`
 -- -----------------------------------------------------
 CREATE TABLE sesion (
-  idSesion INT NOT NULL,
+  idSesion INT NOT NULL AUTO_INCREMENT,
   idUsuario INT NOT NULL,
   PRIMARY KEY (idSesion),
   FOREIGN KEY (idUsuario) REFERENCES
   Usuario (idUsuario)
-  );
+);
   
 
 -- -----------------------------------------------------
 -- Table `mydb`.`Pedido`
 -- -----------------------------------------------------
 CREATE TABLE Pedido(
-idPedido INT NOT NULL,
-fecha DATE NOT NULL,
+idPedido INT NOT NULL AUTO_INCREMENT,
+fecha TIMESTAMP NOT NULL,
 ISBN INT NOT NULL,
 idUsuario INT NOT NULL,
 idSesion INT NOT NULL,

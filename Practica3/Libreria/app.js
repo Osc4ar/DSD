@@ -2,25 +2,27 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const books = require('./books.json');
+const path = require('path');
+const backup = require('./backup');
 const dataManager = require('./dataManager');
+const bodyParser = require('body-parser');
 
 const port = 3000;
 
 app.set('view engine', 'pug');
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  initUserData(req.ip);
-  userID = dataManager.getUserID(req.ip);
-  res.render('index', {
-    session: dataManager.getActiveSession(userID)
-  });
+  res.render('index');
 });
 
 app.get('/coordinador', (req, res) => {
   if (req.ip === '::1') {
-    res.render('coordinador', {
-      orders: dataManager.getCoordinadorView()
+    dataManager.selectQuery(dataManager.coordinadorQuery, (results) => {
+      res.render('coordinador', {
+        orders: results
+      });
     });
   } else {
     res.send('Acceso no autorizado');
@@ -28,21 +30,42 @@ app.get('/coordinador', (req, res) => {
 });
 
 app.get('/coordinador/newSession', (req, res) => {
-  userID = req.query.id;
-  dataManager.newSession(userID);
-  res.send('' + dataManager.getActiveSession(userID));
+  dataManager.insertSession(userID);
+  res.send('' + dataManager.selectQuery());
 });
 
-app.post('/bookManager', (req, res) => {
-  book = getBook(req.ip);
-  res.json(book);
-});
+app.get('/bookManager', (req, res) => insertLogic(req, res));
 
-app.post('/sessionManager', (req, res) => {
-  const userID = dataManager.getUserID(req.ip);
-  dataManager.newSession(userID);
-  const session = dataManager.getActiveSession(userID);
-  res.send('' + session);
+function insertLogic(req, res) {
+  const username = req.query.username;
+  let query = dataManager.checkUserQuery + "'"+ username + "'";
+  dataManager.selectQuery(query, (results) => {
+    const registered = results.length != 0;
+    if (!registered) {
+      dataManager.insertUser(username, req.ip);
+      backup.sendUser(username, req.ip);
+    }
+    dataManager.selectQuery(dataManager.randomBookQuery, (results) => {
+      let book = results[0];
+      dataManager.insertOrder(username, book.ISBN);
+      backup.sendOrder(username, book.ISBN);
+      dataManager.selectQuery(dataManager.librosDisponiblesQuery, (results) => {
+        book.ended = results.length == 1;
+        res.json(book);
+      });
+    });
+  });
+}
+
+app.get('/sessionManager', (req, res) => {
+  const username = req.query.username;
+  dataManager.selectQuery(dataManager.ultimaSesionQuery, (results) => {
+    const newSession = results[0].idSesion+1
+    const query = dataManager.insertPedidoQuery + "('0', '" + username + "', " + newSession + ")";
+    dataManager.insertQuery(query);
+    backup.sendNewSessionOrder(username, newSession);
+    res.send(''+newSession);
+  });
 });
 
 io.on('connection', (socket) => {
@@ -62,47 +85,4 @@ function formatTime(currentDate) {
   const minutes = currentDate.getMinutes().toString().length == 1 ? '0' + currentDate.getMinutes() : currentDate.getMinutes()
   const seconds = currentDate.getSeconds().toString().length == 1 ? '0' + currentDate.getSeconds() : currentDate.getSeconds()
   return hours + ':' + minutes + ':' + seconds
-}
-
-function initUserData(ip) {
-  let id = 0;
-  if (dataManager.userIDs.length == 0) {
-    id = 1;
-    dataManager.insertUser(id, ip);
-  }
-  else {
-    id = dataManager.userIDs[dataManager.userIDs.length-1] + 1;
-    dataManager.insertUser(id, ip);
-  }
-  dataManager.userIDs.push(id);
-  dataManager.insertSession(1, id);
-}
-
-function libraryContains(library, isbn) {
-  for (let i = 0; i < library.length; i++) {
-    if (library[i].ISBN == isbn) {
-      return i;
-    }
-  }
-  return -1;
-}
-
-function getBook(client) {
-  let availableBooks = JSON.parse(JSON.stringify(books.library));
-  const userID = dataManager.getUserID(client);
-  const session = dataManager.getActiveSession(userID);
-  const userOrders = dataManager.getActiveSessionOrders(userID);
-  for (let i = 0; i < userOrders.length; i++) {
-    const bookPosition = libraryContains(availableBooks, userOrders[i].isbn);
-    if (bookPosition != -1) {
-      availableBooks.splice(bookPosition, 1);
-    }
-  }
-  if (availableBooks.length != 0) {
-    const index = Math.floor(Math.random()*availableBooks.length);
-    const book = availableBooks[index];
-    dataManager.insertOrder(userID, session, book.ISBN);
-    return book;
-  }
-  return {"ended": true};
 }

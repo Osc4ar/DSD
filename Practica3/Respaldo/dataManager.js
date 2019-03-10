@@ -57,6 +57,7 @@ function checkUserRegistered(idUsuario) {
 function insertOrder(user, isbn){
     selectQuery(ultimaSesionQuery, (results) => {
         const insert = insertPedidoQuery + "('" + isbn + "', '" + user + "', " + results[0].idSesion + ")";
+        console.log(insert);
         insertQuery(insert);
     });
 }

@@ -4,7 +4,9 @@ html(lang="es")
         meta(http-equiv="X-UA-Compatible" content="ie=edge")
         title Libreria
     body
-        button#requestNewBook(onclick="requestNewBook()") Nuevo libro
+        div
+            input#username(type="text", name="username", placeholder="Usuario")
+            button#requestNewBook(onclick="requestNewBook()") Nuevo libro
         p#clock 00:00:00
         div
             table
@@ -23,8 +25,5 @@ html(lang="es")
                 tr
                     td Precio
                     td#Precio
-
-
         script(src="/socket.io/socket.io.js")
-        script
-            include js/index.js
+        script(src="/public/js/index.js")
