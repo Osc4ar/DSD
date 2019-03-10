@@ -44,3 +44,4 @@ CREATE VIEW `LibroRandom` AS select `LibrosDisponibles`.`ISBN` AS `ISBN`,`Libros
 | 9788441405295 | DON QUIJOTE DE LA MANCHA  | MIGUEL DE CERVANTES SAAVEDRA  | EDAF      | 172.04 | quijote.png |
 +---------------+---------------------------+-------------------------------+-----------+--------+-------------+
 
+CREATE view Coordinador AS select `L`.`ISBN` AS `ISBN`,`L`.`Nombre` AS `Nombre`,`L`.`Autor` AS `Autor`,`L`.`Editorial` AS `Editorial`,`L`.`Precio` AS `Precio`,`L`.`Portada` AS `Portada`,`P`.`idPedido` AS `idPedido`,`P`.`fecha` AS `fecha`,`P`.`idUsuario` AS `idUsuario`, U.IP as IP,`P`.`idSesion` AS `idSesion` from (Libro as L, Pedido as P, Usuario as U) where (`L`.`ISBN` = `P`.`ISBN` and U.idUsuario = P.idUsuario and not L.ISBN='0') order by P.fecha DESC;

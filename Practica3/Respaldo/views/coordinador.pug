@@ -13,7 +13,7 @@ html(lang="es")
                     i.material-icons(style='color:black;') menu
                 ul.right.hide-on-med-and-down
                     li(style='border-right:1px solid #ebebeb;border-left:1px solid #ebebeb')
-                        a.font12.altas(href="#" onclick="newSession();return false;")
+                        a.font12.altas(href="#")
                             img.left(style='padding:10px; width:60px;', width='50', src='public/img/restart.png')
                 ul#mobile-demo.side-nav
                     li
@@ -31,7 +31,8 @@ html(lang="es")
         div.container
             .row
             each order in orders
-                    .card.horizontal.s12.m8.offset-m2
+                .col.s12.m7
+                    .card.horizontal
                         .card-image
                             img(src='public/img/'+order.Portada, style="height:230px; width:146px")
                         .card-stacked

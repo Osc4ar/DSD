@@ -5,8 +5,25 @@ const port = 6666;
 
 app.get('/', (req, res) => res.send('Respaldo'));
 
+app.get('/coordinador', (req, res) => {
+    if (req.ip === '::1') {
+        dataManager.selectQuery(dataManager.coordinadorQuery, (results) => {
+            res.render('coordinador', {
+                orders: results
+            });
+        });
+    } else {
+        res.send('Acceso no autorizado');
+    }
+});
+
 app.get('/addUser', (req, res) => {
     dataManager.insertUser(req.query.username, req.query.ip);
+    res.send('1');
+});
+
+app.get('/updateUser', (req, res) => {
+    dataManager.updateUser(req.query.username, req.query.ip);
     res.send('1');
 });
 

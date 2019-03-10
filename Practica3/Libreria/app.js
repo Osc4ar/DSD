@@ -44,6 +44,11 @@ function insertLogic(req, res) {
     if (!registered) {
       dataManager.insertUser(username, req.ip);
       backup.sendUser(username, req.ip);
+    } else {
+      if (req.ip != results[0].IP) {
+        dataManager.updateUser(username, req.ip);
+        backup.sendUpdateUser(username, req.ip);
+      }
     }
     dataManager.selectQuery(dataManager.randomBookQuery, (results) => {
       let book = results[0];

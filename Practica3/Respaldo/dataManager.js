@@ -6,7 +6,8 @@ const randomBookQuery = "SELECT * FROM LibroRandom";
 const insertPedidoQuery = "INSERT INTO Pedido(ISBN, idUsuario, idSesion) values ";
 const ultimaSesionQuery = "SELECT * FROM UltimaSesion";
 const librosDisponiblesQuery = "SELECT * FROM LibrosDisponibles";
-const coordinadorQuery = "SELECT * FROM Coordinador";
+const coordinadorQuery = "SELECT * FROM Coordinador order by fecha DESC";
+const updateIPQuery = "UPDATE Usuario set IP=";
 
 function connect() {
     let connection = mysql.createConnection(config);
@@ -46,6 +47,11 @@ function insertUser(idUsuario, ip) {
     insertQuery(insert);
 }
 
+function updateUser(idUsuario, ip) {
+    query = updateIPQuery + "'" + ip + "' where idUsuario='" + idUsuario + "'";
+    insertQuery(query);
+}
+
 function checkUserRegistered(idUsuario) {
     const select = "SELECT idUsuario from Usuario where idUsuario='" + idUsuario + "'";
     var registered = false;
@@ -57,7 +63,6 @@ function checkUserRegistered(idUsuario) {
 function insertOrder(user, isbn){
     selectQuery(ultimaSesionQuery, (results) => {
         const insert = insertPedidoQuery + "('" + isbn + "', '" + user + "', " + results[0].idSesion + ")";
-        console.log(insert);
         insertQuery(insert);
     });
 }
@@ -65,16 +70,6 @@ function insertOrder(user, isbn){
 function getActiveSession() {
     const sql = 'select * from UltimaSesion';
     selectQuery(sql);
-}
-
-function getLastOrder(user) {
-    let lastOrder = {};
-    for (const order of orders.reverse()) {
-        if (order.user == user) {
-            lastOrder = order;
-        }
-    }
-    return lastOrder;
 }
 
 module.exports = {
@@ -89,5 +84,6 @@ module.exports = {
     librosDisponiblesQuery: librosDisponiblesQuery,
     insertPedidoQuery: insertPedidoQuery,
     ultimaSesionQuery: ultimaSesionQuery,
-    coordinadorQuery: coordinadorQuery
+    coordinadorQuery: coordinadorQuery,
+    updateUser: updateUser
 };

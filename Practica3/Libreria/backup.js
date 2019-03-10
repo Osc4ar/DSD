@@ -24,6 +24,10 @@ function sendUser(username, ip) {
     sendRequest('/addUser?username=' + username + '&ip=' + ip);
 }
 
+function sendUpdateUser(username, ip) {
+    sendRequest('/updateUser?username=' + username + '&ip=' + ip);
+}
+
 function sendOrder(username, isbn) {
     sendRequest('/addOrder?username=' + username + '&isbn=' + isbn);
 }
@@ -35,5 +39,6 @@ function sendNewSessionOrder(username, session) {
 module.exports = {
     sendUser: sendUser,
     sendOrder: sendOrder,
-    sendNewSessionOrder: sendNewSessionOrder
+    sendNewSessionOrder: sendNewSessionOrder,
+    sendUpdateUser: sendUpdateUser
 }
