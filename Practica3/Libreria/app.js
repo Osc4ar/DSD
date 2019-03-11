@@ -29,9 +29,15 @@ app.get('/coordinador', (req, res) => {
   }
 });
 
-app.get('/coordinador/newSession', (req, res) => {
-  dataManager.insertSession(userID);
-  res.send('' + dataManager.selectQuery());
+app.get('/sessionManager', (req, res) => {
+  const username = req.query.username;
+  dataManager.selectQuery(dataManager.ultimaSesionQuery, (results) => {
+    const newSession = results[0].idSesion+1
+    const query = dataManager.insertPedidoQuery + "('0', '" + username + "', " + newSession + ")";
+    dataManager.insertQuery(query);
+    backup.sendNewSessionOrder(username, newSession);
+    res.send(''+newSession);
+  });
 });
 
 app.get('/bookManager', (req, res) => insertLogic(req, res));
@@ -62,22 +68,11 @@ function insertLogic(req, res) {
   });
 }
 
-app.get('/sessionManager', (req, res) => {
-  const username = req.query.username;
-  dataManager.selectQuery(dataManager.ultimaSesionQuery, (results) => {
-    const newSession = results[0].idSesion+1
-    const query = dataManager.insertPedidoQuery + "('0', '" + username + "', " + newSession + ")";
-    dataManager.insertQuery(query);
-    backup.sendNewSessionOrder(username, newSession);
-    res.send(''+newSession);
-  });
-});
+http.listen(port, () => console.log('Libreria iniciada'));
 
 io.on('connection', (socket) => {
   setInterval(() => sendTime(socket), 1000)
 });
-
-http.listen(port, () => console.log('Libreria iniciada'));
 
 function sendTime(socket) {
   currentDate = new Date()

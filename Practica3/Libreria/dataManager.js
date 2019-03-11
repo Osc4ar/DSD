@@ -52,14 +52,6 @@ function updateUser(idUsuario, ip) {
     insertQuery(query);
 }
 
-function checkUserRegistered(idUsuario) {
-    const select = "SELECT idUsuario from Usuario where idUsuario='" + idUsuario + "'";
-    var registered = false;
-    selectQuery(select, (results) => {
-        registered = results.length != 0;
-    });
-}
-
 function insertOrder(user, isbn){
     selectQuery(ultimaSesionQuery, (results) => {
         const insert = insertPedidoQuery + "('" + isbn + "', '" + user + "', " + results[0].idSesion + ")";
@@ -67,23 +59,16 @@ function insertOrder(user, isbn){
     });
 }
 
-function getActiveSession() {
-    const sql = 'select * from UltimaSesion';
-    selectQuery(sql);
-}
-
 module.exports = {
     insertUser: insertUser,
-    checkUserRegistered: checkUserRegistered,
-    selectQuery: selectQuery,
+    updateUser: updateUser,
     insertOrder: insertOrder,
-    getActiveSession: getActiveSession,
+    insertQuery: insertQuery,
+    selectQuery: selectQuery,
     checkUserQuery: checkUserQuery,
     randomBookQuery: randomBookQuery,
-    insertQuery: insertQuery,
     librosDisponiblesQuery: librosDisponiblesQuery,
     insertPedidoQuery: insertPedidoQuery,
     ultimaSesionQuery: ultimaSesionQuery,
-    coordinadorQuery: coordinadorQuery,
-    updateUser: updateUser
+    coordinadorQuery: coordinadorQuery
 };

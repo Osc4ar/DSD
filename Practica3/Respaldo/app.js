@@ -3,7 +3,7 @@ const dataManager = require('./dataManager');
 const app = express();
 const port = 6666;
 
-app.get('/', (req, res) => res.send('Respaldo'));
+app.get('/', (req, res) => res.send('Backup'));
 
 app.get('/coordinador', (req, res) => {
     if (req.ip === '::1') {
