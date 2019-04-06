@@ -30,10 +30,12 @@ app.get('/coordinador', (req, res) => {
 });
 
 app.get('/newSession', (req, res) => {
-  const idSesion = dataManager.createNewSession();
-  console.log(idSesion);
-  backup.sendNewSessionOrder();
-  res.send(idSesion);
+  dataManager.createNewSession((idSesion) => {
+    //backup.sendNewSessionOrder();
+    response = {idSesion: idSesion};
+    console.log(response);
+    res.send(response);
+  });
 });
 
 app.get('/newBook', (req, res) => getNewBook(req, res));
@@ -45,17 +47,17 @@ function getNewBook(req, res) {
     const registered = results.length != 0;
     if (!registered) {
       dataManager.insertUser(username, req.ip);
-      backup.sendUser(username, req.ip);
+      //backup.sendUser(username, req.ip);
     } else {
       if (req.ip != results[0].IP) {
         dataManager.updateUser(username, req.ip);
-        backup.sendUpdateUser(username, req.ip);
+        //backup.sendUpdateUser(username, req.ip);
       }
     }
     dataManager.selectQuery(dataManager.randomBookQuery, (results) => {
       let book = results[0];
       dataManager.insertOrder(username, book.ISBN);
-      backup.sendOrder(username, book.ISBN);
+      //backup.sendOrder(username, book.ISBN);
       dataManager.selectQuery(dataManager.librosDisponiblesQuery, (results) => {
         book.ended = results.length == 1;
         res.json(book);

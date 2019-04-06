@@ -34,9 +34,10 @@
                 <div class="col s12 m6 l6 xl6" style="padding-top: 10px;padding-left: 10px;">
 
                 </div>
-                <div class="col s12 m6 l6 xl6 font20">
-                    <div class="row" style="margin-bottom:5px;">
-                        <button class="btn waves-effect waves-light indigo font12White right" type="submit" name="action">Pedir Libro
+                <div class="col s12 font20">
+                    <div class="row white" style="margin-bottom:5px; padding: 25px 10px 10px 10px;">
+                        <input class="col s12 m9" id="username" type="text" name="username" placeholder="Usuario" style="color: #000000;">
+                        <button id="requestNewBook" class="col s12 m3 btn waves-effect waves-light indigo font12White right" type="submit" name="action" onclick="requestNewBook()">Pedir Libro
                             <i class="material-icons right">add</i>
                         </button>
                     </div>
@@ -53,24 +54,23 @@
                         <tbody class="font12 altas">
                         <tr>
                             <td><b>ISBN:</b></td>
-                            <td></td>
+                            <td id="ISBN"></td>
                         </tr>
                         <tr>
                             <td><b>Nombre:</b></td>
-                            <td></td>
-
+                            <td id="Nombre"></td>
                         </tr>
                         <tr>
                             <td><b>Autor:</b></td>
-                            <td></td>
+                            <td id="Autor"></td>
                         </tr>
                         <tr>
                             <td><b>Editorial:</b></td>
-                            <td></td>
+                            <td id="Editorial"></td>
                         </tr>
                         <tr>
                             <td><b>Precio:</b></td>
-                            <td></td>
+                            <td id="Precio"></td>
                         </tr>
                         </tbody>
                     </table>

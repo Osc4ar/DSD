@@ -6,7 +6,7 @@ socket.on('time', (data) => {
 });
 
 function requestNewBook() {
-  sendRequest('newBook');
+  sendRequest('newBook', handlerNewBook);
 }
 
 function handlerNewBook(response) {
@@ -38,10 +38,11 @@ function requestNewSession() {
 }
 
 function handlerNewSession(response) {
-  if (!isNaN(response)) {
-    window.alert('Sesión '+ response + ' iniciada');
+  const sesionInfo = JSON.parse(response);
+  if (sesionInfo.idSesion != undefined) {
+    window.alert('Sesión '+ sesionInfo.idSesion + ' iniciada');
   } else {
-    window.alert('Erro iniciando nueva sesión');
+    window.alert('Error iniciando sesión');
   }
 }
 

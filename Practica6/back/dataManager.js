@@ -61,14 +61,13 @@ function insertOrder(user, isbn){
     });
 }
 
-function createNewSession() {
-    let idSesion = 0;
+function createNewSession(sender) {
     insertQuery(updateUltimaSesionQuery);
     insertQuery(insertSesionQuery);
     selectQuery(ultimaSesionQuery, (results) => {
         idSesion = results[0].idSesion;
+        sender(idSesion);
     });
-    return idSesion;
 }
 
 module.exports = {

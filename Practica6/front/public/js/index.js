@@ -1,12 +1,7 @@
-const host = location.host
-const socket = io.connect(host)
-socket.on('time', (data) => {
-  clock = document.getElementById('clock')
-  clock.innerHTML = data['time']
-});
+const host = "127.0.0.1:3000";
 
 function requestNewBook() {
-  sendRequest('newBook');
+  sendRequest('newBook', handlerNewBook);
 }
 
 function handlerNewBook(response) {
@@ -38,10 +33,11 @@ function requestNewSession() {
 }
 
 function handlerNewSession(response) {
-  if (!isNaN(response)) {
-    window.alert('Sesión '+ response + ' iniciada');
+  const sesionInfo = JSON.parse(response);
+  if (sesionInfo.idSesion != undefined) {
+    window.alert('Sesión '+ sesionInfo.idSesion + ' iniciada');
   } else {
-    window.alert('Erro iniciando nueva sesión');
+    window.alert('Error iniciando sesión');
   }
 }
 
@@ -58,7 +54,7 @@ function sendRequest(server, handler) {
 }
 
 function makeURL(server) {
-  let url = 'http://' + location.host + '/' + server;
+  let url = 'http://' + host + '/' + server;
   if (server == 'newBook') {
     const username = 'username=' + document.getElementById('username').value;
     url = url + '?' + username;

@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
-const io = require('socket.io')(http);
 const path = require('path');
 const backup = require('./backup');
 const dataManager = require('./dataManager');
@@ -9,8 +8,13 @@ const bodyParser = require('body-parser');
 
 const port = 3000;
 
-app.set('view engine', 'pug');
 app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+app.set('view engine', 'pug');
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
@@ -30,10 +34,12 @@ app.get('/coordinador', (req, res) => {
 });
 
 app.get('/newSession', (req, res) => {
-  const idSesion = dataManager.createNewSession();
-  console.log(idSesion);
-  backup.sendNewSessionOrder();
-  res.send(idSesion);
+  dataManager.createNewSession((idSesion) => {
+    //backup.sendNewSessionOrder();
+    response = {idSesion: idSesion};
+    console.log(response);
+    res.send(response);
+  });
 });
 
 app.get('/newBook', (req, res) => getNewBook(req, res));
@@ -45,17 +51,17 @@ function getNewBook(req, res) {
     const registered = results.length != 0;
     if (!registered) {
       dataManager.insertUser(username, req.ip);
-      backup.sendUser(username, req.ip);
+      //backup.sendUser(username, req.ip);
     } else {
       if (req.ip != results[0].IP) {
         dataManager.updateUser(username, req.ip);
-        backup.sendUpdateUser(username, req.ip);
+        //backup.sendUpdateUser(username, req.ip);
       }
     }
     dataManager.selectQuery(dataManager.randomBookQuery, (results) => {
       let book = results[0];
       dataManager.insertOrder(username, book.ISBN);
-      backup.sendOrder(username, book.ISBN);
+      //backup.sendOrder(username, book.ISBN);
       dataManager.selectQuery(dataManager.librosDisponiblesQuery, (results) => {
         book.ended = results.length == 1;
         res.json(book);
@@ -65,20 +71,3 @@ function getNewBook(req, res) {
 }
 
 http.listen(port, () => console.log('Libreria iniciada'));
-
-io.on('connection', (socket) => {
-  setInterval(() => sendTime(socket), 1000)
-});
-
-function sendTime(socket) {
-  currentDate = new Date();
-  currentTime = formatTime(currentDate);
-  socket.emit('time', { time: currentTime });
-}
-
-function formatTime(currentDate) {
-  const hours = currentDate.getHours();
-  const minutes = currentDate.getMinutes().toString().length == 1 ? '0' + currentDate.getMinutes() : currentDate.getMinutes();
-  const seconds = currentDate.getSeconds().toString().length == 1 ? '0' + currentDate.getSeconds() : currentDate.getSeconds();
-  return hours + ':' + minutes + ':' + seconds;
-}
