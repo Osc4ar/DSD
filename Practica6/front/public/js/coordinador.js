@@ -1,16 +1,15 @@
 function newSession() {
-    const host = location.host;
+    const host = '127.0.0.1:3000';
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-        const response = this.responseText;
-        if (!isNaN(response)) {
-            window.alert('Sesión '+ response + ' iniciada');
+        const sesionInfo = JSON.parse(response);
+        if (sesionInfo.idSesion != undefined) {
+          window.alert('Sesión '+ sesionInfo.idSesion + ' iniciada');
         } else {
-            window.alert('Error en creación de sesión');
+          window.alert('Error iniciando sesión');
         }
-      }
     };
-    xhttp.open('GET', 'http://' + host + '/sessionManager?username=Coordinador');
+    xhttp.open('GET', 'http://' + host + '/newSession');
     xhttp.send();
 }

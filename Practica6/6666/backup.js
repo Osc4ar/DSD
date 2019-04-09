@@ -4,7 +4,7 @@ function sendRequest(route, errorHandler) {
     const options = [
         {
             host: '127.0.0.1',
-            port: '7776',
+            port: '3000',
             path: route,
             method: 'GET',
             headers: {

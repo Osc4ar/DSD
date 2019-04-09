@@ -13,7 +13,7 @@ function sendRequest(route, errorHandler) {
         },
         {
             host: '127.0.0.1',
-            port: '7777',
+            port: '3000',
             path: route,
             method: 'GET',
             headers: {

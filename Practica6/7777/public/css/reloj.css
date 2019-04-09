@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html,body {
+    height: 100%;
+}
+body {
+    background: #ebebeb;
+    font-size: 16px;
+    color: #fff;
+}
+.widget p {
+    display: inline-block;
+    line-height: 1em;
+}
+.fecha {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 5px;
+    background: #b39ddb;
+    padding: 0px;
+    width: 100%;
+}
+.reloj {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    width: 100%;
+    padding: 20px;
+    font-size: 4em;
+    text-align: center;
+    background: #bdbdbd;
+}
+.reloj .cajaSegundos {
+    display: inline-block;
+}
+.reloj .ampm, .reloj .segundos{
+    display: block;
+    font-size: 4rem;
+}

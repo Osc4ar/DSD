@@ -1,0 +1,19 @@
+{
+  "name": "libreria",
+  "version": "1.0.0",
+  "description": "Aplicacion para pedir libros de un sistema de apartado virtual en una biblioteca",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Oscar, Carmen, Sofia, America",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mysql": "^2.16.0",
+    "pug": "^2.0.3",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {}
+}

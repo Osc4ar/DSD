@@ -35,7 +35,7 @@ app.get('/coordinador', (req, res) => {
 
 app.get('/newSession', (req, res) => {
   dataManager.createNewSession((idSesion) => {
-    //backup.sendNewSessionOrder();
+    backup.newSession(() => res.send('Error replicando nueva sesión'));
     response = {idSesion: idSesion};
     console.log(response);
     res.send(response);
@@ -51,17 +51,17 @@ function getNewBook(req, res) {
     const registered = results.length != 0;
     if (!registered) {
       dataManager.insertUser(username, req.ip);
-      //backup.sendUser(username, req.ip);
+      backup.addUser(username, req.ip, () => res.send('Error replicando nuevo usuario'));
     } else {
       if (req.ip != results[0].IP) {
         dataManager.updateUser(username, req.ip);
-        //backup.sendUpdateUser(username, req.ip);
+        backup.updateUser(username, req.ip, () => res.send('Error replicando actualización de usuario'));
       }
     }
     dataManager.selectQuery(dataManager.randomBookQuery, (results) => {
       let book = results[0];
       dataManager.insertOrder(username, book.ISBN);
-      //backup.sendOrder(username, book.ISBN);
+      backup.newOrder(username, book.ISBN, () => res.send('Error replicando nueva orden'));
       dataManager.selectQuery(dataManager.librosDisponiblesQuery, (results) => {
         book.ended = results.length == 1;
         res.json(book);
@@ -70,4 +70,23 @@ function getNewBook(req, res) {
   });
 }
 
-http.listen(port, () => console.log('Libreria iniciada'));
+app.get('/replicateAddUser', (req, res) => {
+  dataManager.insertUser(req.query.username, req.query.ip);
+  res.send('1');
+});
+
+app.get('/replicateUpdateUser', (req, res) => {
+  dataManager.updateUser(req.query.username, req.query.ip);
+  res.send('1');
+});
+
+app.get('/replicateNewOrder', (req, res) => {
+  dataManager.insertOrder(req.query.username, req.query.isbn);
+  res.send('1');
+});
+
+app.get('/replicateAddNewSession', (req, res) => {
+  dataManager.createNewSession((idSesion) => res.send('1'));
+});
+
+http.listen(port, () => console.log('Libreria iniciada en 3000'));
