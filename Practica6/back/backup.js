@@ -41,8 +41,8 @@ function updateUser(username, ip, errorHandler) {
     sendRequest('/replicateUpdateUser?username=' + username + '&ip=' + ip, errorHandler);
 }
 
-function newOrder(username, isbn, errorHandler) {
-    sendRequest('/replicateNewOrder?username=' + username + '&isbn=' + isbn, errorHandler);
+function newOrder(username, isbn, time, errorHandler) {
+    sendRequest('/replicateNewOrder?username=' + username + '&isbn=' + isbn + '&time=' + time, errorHandler);
 }
 
 function newSession(errorHandler) {

@@ -46,6 +46,7 @@ app.get('/newBook', (req, res) => getNewBook(req, res));
 
 function getNewBook(req, res) {
   const username = req.query.username;
+  const time = req.query.time;
   let query = dataManager.checkUserQuery + "'"+ username + "'";
   dataManager.selectQuery(query, (results) => {
     const registered = results.length != 0;
@@ -60,8 +61,8 @@ function getNewBook(req, res) {
     }
     dataManager.selectQuery(dataManager.randomBookQuery, (results) => {
       let book = results[0];
-      dataManager.insertOrder(username, book.ISBN);
-      backup.newOrder(username, book.ISBN, () => res.send('Error replicando nueva orden'));
+      dataManager.insertOrder(username, book.ISBN, time);
+      backup.newOrder(username, book.ISBN, time, () => res.send('Error replicando nueva orden'));
       dataManager.selectQuery(dataManager.librosDisponiblesQuery, (results) => {
         book.ended = results.length == 1;
         res.json(book);
@@ -71,21 +72,25 @@ function getNewBook(req, res) {
 }
 
 app.get('/replicateAddUser', (req, res) => {
+  console.log('Replicando operación');
   dataManager.insertUser(req.query.username, req.query.ip);
   res.send('1');
 });
 
 app.get('/replicateUpdateUser', (req, res) => {
+  console.log('Replicando operación');
   dataManager.updateUser(req.query.username, req.query.ip);
   res.send('1');
 });
 
 app.get('/replicateNewOrder', (req, res) => {
-  dataManager.insertOrder(req.query.username, req.query.isbn);
+  console.log('Replicando operación');
+  dataManager.insertOrder(req.query.username, req.query.isbn, req.query.time);
   res.send('1');
 });
 
 app.get('/replicateAddNewSession', (req, res) => {
+  console.log('Replicando operación');
   dataManager.createNewSession((idSesion) => res.send('1'));
 });
 

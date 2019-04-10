@@ -25,9 +25,6 @@ $(function(){
         $pDia.text(dia);
         $pMes.text(meses[mes]);
         $pAnio.text(anio);
-        if(hora == 0){
-            hora = 12;
-        }
         if(hora<10){$pHoras.text("0"+hora)}else{$pHoras.text(hora)};
         if(minutos<10){$pMinutos.text("0"+minutos)}else{$pMinutos.text(minutos)};
         if(segundos<10){$pSegundos.text("0"+segundos)}else{$pSegundos.text(segundos)};

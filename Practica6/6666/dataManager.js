@@ -3,7 +3,7 @@ const config = require ('./config.js');
 
 const checkUserQuery = "SELECT idUsuario from Usuario where idUsuario=";
 const randomBookQuery = "SELECT * FROM LibroRandom";
-const insertPedidoQuery = "INSERT INTO Pedido(ISBN, idUsuario, idSesion) values ";
+const insertPedidoQuery = "INSERT INTO Pedido(ISBN, idUsuario, idSesion, fecha) values ";
 const ultimaSesionQuery = "SELECT * FROM UltimaSesion";
 const insertSesionQuery = "INSERT INTO Sesion VALUES ()";
 const updateUltimaSesionQuery = "UPDATE Sesion set fin=CURRENT_TIME() WHERE idSesion=(SELECT * FROM UltimaSesion)";
@@ -54,11 +54,22 @@ function updateUser(idUsuario, ip) {
     insertQuery(query);
 }
 
-function insertOrder(user, isbn){
+function insertOrder(user, isbn, time){
+    const formattedTime = formatTime(time);
     selectQuery(ultimaSesionQuery, (results) => {
-        const insert = insertPedidoQuery + "('" + isbn + "', '" + user + "', " + results[0].idSesion + ")";
+        const insert = insertPedidoQuery + "('" + isbn + "', '" + user + "', " + results[0].idSesion + ", '" + formattedTime + "')";
         insertQuery(insert);
     });
+}
+
+function formatTime(time) {
+    const timeComponents = time.split(':');
+    const hours   = parseInt(timeComponents[0]);
+    const minutes = parseInt(timeComponents[1]);
+    const seconds = parseInt(timeComponents[2]);
+    let date = new Date();
+    date.setHours(hours, minutes, seconds);
+    return date.toISOString().slice(0, 10) + ' ' + date.toString().slice(16, 24);
 }
 
 function createNewSession(sender) {

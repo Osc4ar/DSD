@@ -1,5 +1,3 @@
-const host = "127.0.0.1:3000";
-
 function requestNewBook() {
   sendRequest('newBook', handlerNewBook);
 }
@@ -18,6 +16,11 @@ function parseBook(book) {
   document.getElementById('Autor').innerHTML = book.Autor;
   document.getElementById('Editorial').innerHTML = book.Editorial;
   document.getElementById('Precio').innerHTML = book.Precio;
+}
+
+function getIntValueById(id) {
+  const value = document.getElementById(id).textContent;
+  return parseInt(value);
 }
 
 function sessionEnded() {
@@ -53,11 +56,29 @@ function sendRequest(server, handler) {
   xhttp.send();
 }
 
+function getHost() {
+  const hosts = ["127.0.0.1:3000", "127.0.0.1:7777", "127.0.0.1:7776"];
+  const index = Math.floor(Math.random()*hosts.length);
+  return hosts[index];
+}
+
+function getTime() {
+  const hours = getIntValueById('horas');
+  const minutes = getIntValueById('minutos');
+  const seconds = getIntValueById('segundos');
+  console.log(hours + ':' + minutes + ':' + seconds);
+  return hours + ':' + minutes + ':' + seconds;
+}
+
 function makeURL(server) {
+  const host = getHost();
+  console.log('Host: ' + host);
   let url = 'http://' + host + '/' + server;
   if (server == 'newBook') {
     const username = 'username=' + document.getElementById('username').value;
     url = url + '?' + username;
+    const time = '&time=' + getTime();
+    url = url + time;
   }
   return url;
 }
