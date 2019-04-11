@@ -94,4 +94,6 @@ app.get('/replicateAddNewSession', (req, res) => {
   dataManager.createNewSession((idSesion) => res.send('1'));
 });
 
+setInterval(backup.sendBufferedOperations, 5000);
+
 http.listen(port, () => console.log('Libreria iniciada en 7777'));

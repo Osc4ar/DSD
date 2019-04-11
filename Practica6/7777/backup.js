@@ -1,5 +1,7 @@
 const http = require('http');
 
+let bufferedOperations = [];
+
 function sendRequest(route, errorHandler) {
     const options = [
         {
@@ -29,8 +31,31 @@ function sendRequest(route, errorHandler) {
                 }
             });
         });
+        req.on('error', (err) => {
+            console.error(err.stack);
+            bufferedOperations.unshift(option);
+        });
         req.end();
     });
+}
+
+function sendBufferedOperations() {
+    let index = bufferedOperations.length;
+    while (index--) {
+        const req = http.request(bufferedOperations[index], (res) => {
+            res.on('data', (data) => {
+                if (data != '1') {
+                    errorHandler();
+                } else {
+                    bufferedOperations.splice(index, 1);
+                }
+            });
+        });
+        req.on('error', (err) => {
+            console.error(err.stack);
+        });
+        req.end();
+    }
 }
 
 function addUser(username, ip, errorHandler) {
@@ -53,5 +78,6 @@ module.exports = {
     addUser: addUser,
     newOrder: newOrder,
     newSession: newSession,
-    updateUser: updateUser
+    updateUser: updateUser,
+    sendBufferedOperations: sendBufferedOperations
 }

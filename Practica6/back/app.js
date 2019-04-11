@@ -5,6 +5,7 @@ const path = require('path');
 const backup = require('./backup');
 const dataManager = require('./dataManager');
 const bodyParser = require('body-parser');
+const io = require('socket.io')(http);
 
 const port = 3000;
 
@@ -93,5 +94,7 @@ app.get('/replicateAddNewSession', (req, res) => {
   console.log('Replicando operación');
   dataManager.createNewSession((idSesion) => res.send('1'));
 });
+
+setInterval(backup.sendBufferedOperations, 5000);
 
 http.listen(port, () => console.log('Libreria iniciada en 3000'));
