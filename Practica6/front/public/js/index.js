@@ -1,9 +1,13 @@
 const hosts = ["127.0.0.1:3000", "127.0.0.1:7777", "127.0.0.1:7776"];
 let hostsDistance = [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY];
 
-window.onload = checkHostsDistance;
+window.onload = () => {
+  checkHostsDistance();
+  actualizarHora();
+};
 
 window.setInterval(() => checkHostsDistance(), 300000);
+window.setInterval(() => actualizarHora(),1000);
 
 function requestNewBook() {
   sendRequest('newBook', handlerNewBook);
@@ -122,3 +126,94 @@ function makeURL(service) {
   }
   return url;
 }
+
+let global_date = crearHora(random_int(23), random_int(59), random_int(59));
+  function random_int(max)//Solo retorna los valores aleatorios enteros y valor maximo a retornar
+  {
+    return Math.floor(Math.random() * max);
+  }
+  function crearHora(hora,minutos,segundos)//Crea la fecha aleatoria
+  {
+    var fecha = new Date(),
+        dia = fecha.getDate(),
+        mes = fecha.getMonth(),
+        anio = fecha.getFullYear(),
+        new_fecha = new Date(anio,mes,dia,hora,minutos,segundos);
+    return new_fecha;
+  }
+  function ajustar()//realiza los aumentos y crea fechas para que se muestren en el reloj
+  {
+    var hora = global_date.getHours(),
+        minutos = global_date.getMinutes(),
+        segundos = global_date.getSeconds() + 1,
+        dia = global_date.getDate(),
+        mes = global_date.getMonth(),
+        anio = global_date.getFullYear();
+    if(segundos > 59){
+      minutos = minutos + 1;
+    }
+    if(minutos > 59){
+      hora = hora + 1;
+    }
+    if(hora > 23){
+      segundos = 0;
+      minutos = 0;
+      hora = 0;
+    }
+    return global_date = new Date(anio,mes,dia,hora,minutos,segundos);//actualizamos la fecha
+  }
+  function modificar()//realiza los aumentos y crea fechas para que se muestren en el reloj
+  {
+    var hora = document.getElementById("inputHour").value,
+        minutos = document.getElementById("inputMin").value,
+        segundos = document.getElementById("inputSec").value,
+        dia = global_date.getDate(),
+        mes = global_date.getMonth(),
+        anio = global_date.getFullYear();
+    hora = parseInt(hora);
+    minutos = parseInt(minutos);
+    segundos = parseInt(segundos);
+    if(segundos > 59){
+      minutos = minutos + 1;
+    }
+    if(minutos > 59){
+      hora = hora + 1;
+    }
+    if(hora > 23){
+      segundos = 0;
+      minutos = 0;
+      hora = 0;
+    }
+    global_date.setHours(hora, minutos, segundos);
+  }
+  function actualizarHora(){
+    var fecha = ajustar(),//manda a ajustar esta, aumentando el segundo transcurrido por llamada
+        hora = fecha.getHours(),
+        minutos = fecha.getMinutes(),
+        segundos = fecha.getSeconds(),
+        diaSemana = fecha.getDay(),
+        dia = fecha.getDate(),
+        mes = fecha.getMonth(),
+        anio = fecha.getFullYear(),
+        ampm;
+    console.log(fecha);
+    var $pHoras = $("#horas"),
+        $pSegundos = $("#segundos"),
+        $pMinutos = $("#minutos"),
+        $pAMPM = $("#ampm"),
+        $pDiaSemana = $("#diaSemana"),
+        $pDia = $("#dia"),
+        $pMes = $("#mes"),
+        $pAnio = $("#anio");
+    var semana = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
+    var meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+    $pDiaSemana.text(semana[diaSemana]);
+    $pDia.text(dia);
+    $pMes.text(meses[mes]);
+    $pAnio.text(anio);
+    if(hora<10){$pHoras.text("0"+hora)}else{$pHoras.text(hora)};
+    if(minutos<10){$pMinutos.text("0"+minutos)}else{$pMinutos.text(minutos)};
+    if(segundos<10){$pSegundos.text("0"+segundos)}else{$pSegundos.text(segundos)};
+    $pAMPM.text(ampm);
+  }

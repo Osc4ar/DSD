@@ -1,5 +1,4 @@
 $(function(){
-    var global_date;//para poder modificar la fecha aleatoria
     var random_int = function(max)//Solo retorna los valores aleatorios enteros y valor maximo a retornar
     {
         return Math.floor(Math.random() * max);
@@ -18,6 +17,27 @@ $(function(){
         var hora = global_date.getHours(),
             minutos = global_date.getMinutes(),
             segundos = global_date.getSeconds() + 1,
+            dia = global_date.getDate(),
+            mes = global_date.getMonth(),
+            anio = global_date.getFullYear();
+        if(segundos > 59){
+            minutos = minutos + 1;
+        }
+        if(minutos > 59){
+            hora = hora + 1;
+        }
+        if(hora > 23){
+            segundos = 0;
+            minutos = 0;
+            hora = 0;
+        }
+        return global_date = new Date(anio,mes,dia,hora,minutos,segundos);//actualizamos la fecha
+    };
+    var modificar = function()//realiza los aumentos y crea fechas para que se muestren en el reloj
+    {
+        var hora = document.getElementById("inputHour"),
+            minutos = document.getElementById("inputMin"),
+            segundos = document.getElementById("inputSec"),
             dia = global_date.getDate(),
             mes = global_date.getMonth(),
             anio = global_date.getFullYear();
