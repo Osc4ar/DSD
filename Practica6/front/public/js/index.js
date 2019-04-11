@@ -1,3 +1,10 @@
+const hosts = ["127.0.0.1:3000", "127.0.0.1:7777", "127.0.0.1:7776"];
+let hostsDistance = [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY];
+
+window.onload = checkHostsDistance;
+
+window.setInterval(() => checkHostsDistance(), 300000);
+
 function requestNewBook() {
   sendRequest('newBook', handlerNewBook);
 }
@@ -44,9 +51,38 @@ function handlerNewSession(response) {
   }
 }
 
+function checkHostsDistance() {
+  for (let index = 0; index < hosts.length; index++) {
+    hostsDistance[index] = Number.POSITIVE_INFINITY;
+    ping(hosts[index], (delay) => {
+      hostsDistance[index] = delay;
+      console.log(hosts[index] + ' = ' + hostsDistance[index]);
+    });
+  }
+}
+
+function ping(host, handler) {
+  const started = new Date().getTime();
+  const url = 'http://' + host;
+  const xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      const ended = new Date().getTime();
+      const delay = ended - started;
+      handler(delay);
+    }
+  };
+  xhttp.open('GET', url, true);
+  xhttp.send();
+}
+
 function sendRequest(server, handler) {
   const url = makeURL(server);
   const xhttp = new XMLHttpRequest();
+  xhttp.onerror = function(e) {
+    checkHostsDistance();
+    alert('Servidor no disponible, cambiando a otro servidor.\nVuelva a intentarlo.');
+  };
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       handler(this.responseText);
@@ -57,8 +93,13 @@ function sendRequest(server, handler) {
 }
 
 function getHost() {
-  const hosts = ["127.0.0.1:3000", "127.0.0.1:7777", "127.0.0.1:7776"];
-  const index = Math.floor(Math.random()*hosts.length);
+  let minValue = hostsDistance[0];
+  for (let index = 1; index < hostsDistance.length; index++) {
+    const distance = hostsDistance[index];
+    if (distance < minValue)
+      minValue = distance;
+  }
+  const index = hostsDistance.findIndex(distance => distance == minValue);
   return hosts[index];
 }
 
@@ -66,15 +107,14 @@ function getTime() {
   const hours = getIntValueById('horas');
   const minutes = getIntValueById('minutos');
   const seconds = getIntValueById('segundos');
-  console.log(hours + ':' + minutes + ':' + seconds);
   return hours + ':' + minutes + ':' + seconds;
 }
 
-function makeURL(server) {
+function makeURL(service) {
   const host = getHost();
   console.log('Host: ' + host);
-  let url = 'http://' + host + '/' + server;
-  if (server == 'newBook') {
+  let url = 'http://' + host + '/' + service;
+  if (service == 'newBook') {
     const username = 'username=' + document.getElementById('username').value;
     url = url + '?' + username;
     const time = '&time=' + getTime();
