@@ -8,7 +8,7 @@ const ultimaSesionQuery = "SELECT * FROM UltimaSesion";
 const insertSesionQuery = "INSERT INTO Sesion VALUES ()";
 const updateUltimaSesionQuery = "UPDATE Sesion set fin=CURRENT_TIME() WHERE idSesion=(SELECT * FROM UltimaSesion)";
 const librosDisponiblesQuery = "SELECT * FROM LibrosDisponibles";
-const coordinadorQuery = "SELECT * FROM Coordinador order by fecha DESC";
+const coordinadorQuery = "SELECT * FROM Coordinador order by idPedido DESC";
 const updateIPQuery = "UPDATE Usuario set IP=";
 
 function connect() {
