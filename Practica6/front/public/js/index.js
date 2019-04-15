@@ -1,13 +1,22 @@
-const hosts = ["127.0.0.1:3000", "127.0.0.1:7777", "127.0.0.1:7776"];
+const DEFAULT = "192.168.43.48:3000";
+let mainServer = DEFAULT;
 let hostsDistance = [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY];
 
 window.onload = () => {
-  checkHostsDistance();
+  requestNewServer();
   actualizarHora();
 };
 
-window.setInterval(() => checkHostsDistance(), 300000);
-window.setInterval(() => actualizarHora(),1000);
+window.setInterval(() => actualizarHora(), 1000);
+
+function requestNewServer() {
+  sendRequest('newServer', handlerNewServer);
+}
+
+function handlerNewServer(response) {
+  const receivedHost = JSON.parse(response);
+  mainServer = receivedHost.server;
+}
 
 function requestNewBook() {
   sendRequest('newBook', handlerNewBook);
@@ -60,7 +69,7 @@ function checkHostsDistance() {
     hostsDistance[index] = Number.POSITIVE_INFINITY;
     ping(hosts[index], (delay) => {
       hostsDistance[index] = delay;
-      console.log(hosts[index] + ' = ' + hostsDistance[index]);
+      console.log('Hosts encontrados:\n' + hosts[index] + ' = ' + hostsDistance[index]);
     });
   }
 }
@@ -84,8 +93,10 @@ function sendRequest(server, handler) {
   const url = makeURL(server);
   const xhttp = new XMLHttpRequest();
   xhttp.onerror = function(e) {
-    checkHostsDistance();
-    alert('Servidor no disponible, cambiando a otro servidor.\nVuelva a intentarlo.');
+    console.log('Error en envio de peticion: ' + server);
+    mainServer = DEFAULT;
+    setTimeout(() => requestNewServer(), 1000);
+    setTimeout(() => sendRequest(server, handler), 2000);
   };
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -107,17 +118,9 @@ function getHost() {
   return hosts[index];
 }
 
-function getTime() {
-  const hours = getIntValueById('horas');
-  const minutes = getIntValueById('minutos');
-  const seconds = getIntValueById('segundos');
-  return hours + ':' + minutes + ':' + seconds;
-}
-
 function makeURL(service) {
-  const host = getHost();
-  console.log('Host: ' + host);
-  let url = 'http://' + host + '/' + service;
+  console.log('Enviando a host: ' + mainServer);
+  let url = 'http://' + mainServer + '/' + service;
   if (service == 'newBook') {
     const username = 'username=' + document.getElementById('username').value;
     url = url + '?' + username;
@@ -125,6 +128,13 @@ function makeURL(service) {
     url = url + time;
   }
   return url;
+}
+
+function getTime() {
+  const hours = getIntValueById('horas');
+  const minutes = getIntValueById('minutos');
+  const seconds = getIntValueById('segundos');
+  return hours + ':' + minutes + ':' + seconds;
 }
 
 let global_date = crearHora(random_int(23), random_int(59), random_int(59));
@@ -196,7 +206,6 @@ let global_date = crearHora(random_int(23), random_int(59), random_int(59));
         mes = fecha.getMonth(),
         anio = fecha.getFullYear(),
         ampm;
-    console.log(fecha);
     var $pHoras = $("#horas"),
         $pSegundos = $("#segundos"),
         $pMinutos = $("#minutos"),

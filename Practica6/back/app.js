@@ -5,9 +5,33 @@ const path = require('path');
 const backup = require('./backup');
 const dataManager = require('./dataManager');
 const bodyParser = require('body-parser');
-const io = require('socket.io')(http);
 
 const port = 3000;
+
+let servers = [{server: '192.168.43.48:3000', clients: [], on: true}, {server: '192.168.43.48:7776', clients: [], on: false}, {server: '192.168.43.48:7777', clients: [], on: false}];
+
+const io = require('socket.io')(http);
+
+io.on('connection', (socket) => {
+  socket.on('register', (hostID) => {
+    socket.hostID = hostID;
+    console.log('Conectando ' + socket.hostID);
+    servers[hostID].on = true;
+    io.emit('status', servers);
+  });
+  socket.on('disconnect', (data) => {
+    console.log('Desconectando ' + socket.hostID);
+    oldServer = servers[socket.hostID];
+    oldServer.on = false;
+    newServer = getLessBusyServer();
+    for (let index = 0; index < oldServer.clients.length; index++) {
+      const client = oldServer.clients[index];
+      newServer.clients.push(client);
+    }
+    oldServer.clients.splice(0, oldServer.clients.length);
+    io.emit('status', servers);
+  });
+});
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
@@ -70,6 +94,40 @@ function getNewBook(req, res) {
       });
     });
   });
+}
+
+app.get('/newServer', (req, res) => {
+  const assignedServer = getAssignedServer(req.ip);
+  if (assignedServer == null) {
+    lessBusyServer = getLessBusyServer();
+    lessBusyServer.clients.push(req.ip);
+    console.log(servers);
+    io.emit('status', servers);
+    res.send({server: lessBusyServer.server});
+  } else {
+    res.send({server: assignedServer});
+  }
+});
+
+function getAssignedServer(ip) {
+  for (let index = 0; index < servers.length; index++) {
+    const server = servers[index];
+    if (server.clients.includes(ip)) {
+      return server.server;
+    }
+  }
+  return null;
+}
+
+function getLessBusyServer() {
+  let min = 0;
+  for (let index = 1; index < servers.length; index++) {
+    const server = servers[index];
+    if (server.on & server.clients.length < servers[min].clients.length) {
+      min = index;
+    }
+  }
+  return servers[min];
 }
 
 app.get('/replicateAddUser', (req, res) => {

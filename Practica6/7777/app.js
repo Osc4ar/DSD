@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 
 const port = 7777;
 
+let servers = [{server: '192.168.43.48:3000', clients: [], on: true}, {server: '192.168.43.48:7776', clients: [], on: false}, {server: '192.168.43.48:7777', clients: [], on: false}];
+
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -71,6 +73,24 @@ function getNewBook(req, res) {
   });
 }
 
+app.get('/newServer', (req, res) => {
+  lessBusyServer = getLessBusyServer();
+  lessBusyServer.clients.push(req.ip);
+  socket.emit('status', servers);
+  res.send({server: lessBusyServer.server});
+});
+
+function getLessBusyServer() {
+  let min = 0;
+  for (let index = 1; index < servers.length; index++) {
+    const server = servers[index];
+    if (server.clients.length < servers[min].clients.length) {
+      min = index;
+    }
+  }
+  return servers[min];
+}
+
 app.get('/replicateAddUser', (req, res) => {
   console.log('Replicando operación');
   dataManager.insertUser(req.query.username, req.query.ip);
@@ -93,6 +113,19 @@ app.get('/replicateAddNewSession', (req, res) => {
   console.log('Replicando operación');
   dataManager.createNewSession((idSesion) => res.send('1'));
 });
+
+function clientSocket() {
+  const serverHost = getLessBusyServer();
+  const client = require('socket.io-client')('http://' + serverHost.server);
+  client.emit('register', 2);
+  client.on('status', (data) => {
+    console.log(data);
+  });
+  client.on('disconnect', (data) => {
+    console.log('Servidor desconectado');
+  });
+}
+clientSocket();
 
 setInterval(backup.sendBufferedOperations, 5000);
 

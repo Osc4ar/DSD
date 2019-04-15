@@ -32,7 +32,6 @@ function sendRequest(route, errorHandler) {
             });
         });
         req.on('error', (err) => {
-            console.error(err.stack);
             bufferedOperations.unshift(option);
         });
         req.end();
@@ -51,9 +50,7 @@ function sendBufferedOperations() {
                 }
             });
         });
-        req.on('error', (err) => {
-            console.error(err.stack);
-        });
+        req.on('error', (err) => {  });
         req.end();
     }
 }
