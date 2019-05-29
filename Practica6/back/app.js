@@ -61,7 +61,7 @@ function clientSocket(host) {
 
 function reallocateClients(oldServer) {
   for (let i = 0; i < servers.length; i++)
-    if (servers[i].server == oldServer.server)
+    if (servers[i].server == old.server)
       servers.splice(i, 1);
   newServer = getLessBusyServer();
   for (let index = 0; index < oldServer.clients.length; index++) {
