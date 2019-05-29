@@ -3,7 +3,7 @@ const config = require ('./config.js');
 
 const checkUserQuery = "SELECT idUsuario from Usuario where idUsuario=";
 const randomBookQuery = "SELECT * FROM LibroRandom";
-const insertPedidoQuery = "INSERT INTO Pedido(ISBN, idUsuario, idSesion, fecha) values ";
+const insertPedidoQuery = "INSERT INTO Pedido(ISBN, idUsuario, idSesion, fecha, Tiempo) values ";
 const ultimaSesionQuery = "SELECT * FROM UltimaSesion";
 const insertSesionQuery = "INSERT INTO Sesion VALUES ()";
 const updateUltimaSesionQuery = "UPDATE Sesion set fin=CURRENT_TIME() WHERE idSesion=(SELECT * FROM UltimaSesion)";
@@ -17,7 +17,6 @@ function connect() {
         if (err) {
             return console.error('Error: ' + err.message);
         }
-        console.log('Conectado a la base de datos');
     });
     return connection;
 }
@@ -54,10 +53,10 @@ function updateUser(idUsuario, ip) {
     insertQuery(query);
 }
 
-function insertOrder(user, isbn, time){
+function insertOrder(user, isbn, time, count){
     const formattedTime = formatTime(time);
     selectQuery(ultimaSesionQuery, (results) => {
-        const insert = insertPedidoQuery + "('" + isbn + "', '" + user + "', " + results[0].idSesion + ", '" + formattedTime + "')";
+        const insert = insertPedidoQuery + "('" + isbn + "', '" + user + "', " + results[0].idSesion + ", '" + formattedTime + "', "+ count +")";
         insertQuery(insert);
     });
 }

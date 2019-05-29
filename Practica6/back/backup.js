@@ -2,28 +2,19 @@ const http = require('http');
 
 let bufferedOperations = [];
 
-function sendRequest(route, errorHandler) {
-    const options = [
-        {
-            host: '127.0.0.1',
-            port: '7776',
+function sendRequest(route, targets, errorHandler) {
+    targets.forEach((target) => {
+        hostInfo = target.server.split(':');
+        console.log('Enviando backup a ' + JSON.stringify(target));
+        const option = {
+            host: hostInfo[0],
+            port: hostInfo[1],
             path: route,
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
-        },
-        {
-            host: '127.0.0.1',
-            port: '7777',
-            path: route,
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-    ];
-    options.forEach((option) => {
+        };
         const req = http.request(option, (res) => {
             res.on('data', (data) => {
                 if (data != '1') {
@@ -55,20 +46,24 @@ function sendBufferedOperations() {
     }
 }
 
-function addUser(username, ip, errorHandler) {
-    sendRequest('/replicateAddUser?username=' + username + '&ip=' + ip, errorHandler);
+function addUser(username, ip, targets, errorHandler) {
+    const route = '/replicateAddUser?username=' + username + '&ip=' + ip;
+    sendRequest(route, targets, errorHandler);
 }
 
-function updateUser(username, ip, errorHandler) {
-    sendRequest('/replicateUpdateUser?username=' + username + '&ip=' + ip, errorHandler);
+function updateUser(username, ip, targets, errorHandler) {
+    const route = '/replicateUpdateUser?username=' + username + '&ip=' + ip;
+    sendRequest(route, targets, errorHandler);
 }
 
-function newOrder(username, isbn, time, errorHandler) {
-    sendRequest('/replicateNewOrder?username=' + username + '&isbn=' + isbn + '&time=' + time, errorHandler);
+function newOrder(username, isbn, time, count, targets, errorHandler) {
+    const route = '/replicateNewOrder?username=' + username + '&isbn=' + isbn + '&time=' + time + '&count=' + count;
+    sendRequest(route, targets, errorHandler);
 }
 
-function newSession(errorHandler) {
-    sendRequest('/replicateAddNewSession', errorHandler);
+function newSession(targets, errorHandler) {
+    const route = '/replicateAddNewSession';
+    sendRequest(route, targets, errorHandler);
 }
 
 module.exports = {

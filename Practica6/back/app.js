@@ -6,32 +6,77 @@ const backup = require('./backup');
 const dataManager = require('./dataManager');
 const bodyParser = require('body-parser');
 
-const port = 3000;
-
-let servers = [{server: '192.168.43.48:3000', clients: [], on: true}, {server: '192.168.43.48:7776', clients: [], on: false}, {server: '192.168.43.48:7777', clients: [], on: false}];
+const port = parseInt(process.argv[2]);
 
 const io = require('socket.io')(http);
 
-io.on('connection', (socket) => {
-  socket.on('register', (hostID) => {
-    socket.hostID = hostID;
-    console.log('Conectando ' + socket.hostID);
-    servers[hostID].on = true;
-    io.emit('status', servers);
+let servers = [
+  {server: '10.0.0.19:'+port.toString(), clients: []}
+];
+
+let count = 0;
+setInterval(() => count++, 2000);
+
+if (process.argv.length > 3) {
+  const host = process.argv[3];
+  clientSocket(host);
+} else {
+  serverSocket();
+}
+
+function serverSocket() {
+  io.on('connection', (socket) => {
+    socket.on('register', (hostInfo) => {
+      socket.hostInfo = hostInfo;
+      servers.push(hostInfo);
+      console.log('Conectando ' + socket.hostInfo.server);
+      console.log(servers);
+      io.emit('status', servers);
+    });
+    socket.on('disconnect', (data) => {
+      console.log('Desconectando ' + socket.hostInfo.server);
+      reallocateClients(socket.hostInfo);
+      io.emit('status', servers);
+      console.log(servers);
+    });
   });
-  socket.on('disconnect', (data) => {
-    console.log('Desconectando ' + socket.hostID);
-    oldServer = servers[socket.hostID];
-    oldServer.on = false;
-    newServer = getLessBusyServer();
-    for (let index = 0; index < oldServer.clients.length; index++) {
-      const client = oldServer.clients[index];
-      newServer.clients.push(client);
-    }
-    oldServer.clients.splice(0, oldServer.clients.length);
-    io.emit('status', servers);
+}
+
+function clientSocket(host) {
+  const serverHost = host;
+  const client = require('socket.io-client')('http://' + serverHost);
+  client.emit('register', servers[0]);
+  client.on('status', (data) => {
+    servers = data;
+    console.log(data);
   });
-});
+  client.on('disconnect', (data) => {
+    console.log('Servidor desconectado');
+    exMainServer = findServer(host);
+    reallocateClients(exMainServer);
+    serverSocket();
+    console.log('Servidor convertido a servidor principal');
+  });
+}
+
+function reallocateClients(oldServer) {
+  for (let i = 0; i < servers.length; i++)
+    if (servers[i].server == oldServer.server)
+      servers.splice(i, 1);
+  newServer = getLessBusyServer();
+  for (let index = 0; index < oldServer.clients.length; index++) {
+    const client = oldServer.clients[index];
+    newServer.clients.push(client);
+  }
+  oldServer.clients.splice(0, oldServer.clients.length);
+}
+
+function findServer(host) {
+  for (let i = 0; i < servers.length; i++)
+    if (servers[i].server == host)
+      return servers[i];
+  return ;
+}
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
@@ -58,9 +103,19 @@ app.get('/coordinador', (req, res) => {
   }
 });
 
+function getTargetServers() {
+  let targetServers = [];
+  for (let i = 0; i < servers.length; i++) {
+    if (servers[i].server.split(':')[1] != port.toString())
+      targetServers.push(servers[i]);
+  }
+  return targetServers;
+}
+
 app.get('/newSession', (req, res) => {
   dataManager.createNewSession((idSesion) => {
-    backup.newSession(() => res.send('Error replicando nueva sesión'));
+    const targets = getTargetServers();
+    backup.newSession(targets, () => res.send('Error replicando nueva sesión'));
     response = {idSesion: idSesion};
     console.log(response);
     res.send(response);
@@ -72,22 +127,23 @@ app.get('/newBook', (req, res) => getNewBook(req, res));
 function getNewBook(req, res) {
   const username = req.query.username;
   const time = req.query.time;
+  const targets = getTargetServers();
   let query = dataManager.checkUserQuery + "'"+ username + "'";
   dataManager.selectQuery(query, (results) => {
     const registered = results.length != 0;
     if (!registered) {
       dataManager.insertUser(username, req.ip);
-      backup.addUser(username, req.ip, () => res.send('Error replicando nuevo usuario'));
+      backup.addUser(username, req.ip, targets, () => res.send('Error replicando nuevo usuario'));
     } else {
       if (req.ip != results[0].IP) {
         dataManager.updateUser(username, req.ip);
-        backup.updateUser(username, req.ip, () => res.send('Error replicando actualización de usuario'));
+        backup.updateUser(username, req.ip, targets, () => res.send('Error replicando actualización de usuario'));
       }
     }
     dataManager.selectQuery(dataManager.randomBookQuery, (results) => {
       let book = results[0];
-      dataManager.insertOrder(username, book.ISBN, time);
-      backup.newOrder(username, book.ISBN, time, () => res.send('Error replicando nueva orden'));
+      dataManager.insertOrder(username, book.ISBN, time, count);
+      backup.newOrder(username, book.ISBN, time, count, targets, () => res.send('Error replicando nueva orden'));
       dataManager.selectQuery(dataManager.librosDisponiblesQuery, (results) => {
         book.ended = results.length == 1;
         res.json(book);
@@ -123,7 +179,7 @@ function getLessBusyServer() {
   let min = 0;
   for (let index = 1; index < servers.length; index++) {
     const server = servers[index];
-    if (server.on & server.clients.length < servers[min].clients.length) {
+    if (server.clients.length < servers[min].clients.length) {
       min = index;
     }
   }
@@ -143,8 +199,20 @@ app.get('/replicateUpdateUser', (req, res) => {
 });
 
 app.get('/replicateNewOrder', (req, res) => {
-  console.log('Replicando operación');
-  dataManager.insertOrder(req.query.username, req.query.isbn, req.query.time);
+  console.log(JSON.stringify({
+    'EVENTO': 'Replicando Operación',
+    'OPERACION': 'Nueva Orden'
+  }, null, 4));
+  const queryCount = parseInt(req.query.count);
+  if (queryCount > count) {
+    console.log(JSON.stringify({
+      'EVENTO': 'Contador Actualizado',
+      'PREVIO': count,
+      'NUEVO': queryCount+1
+    }, null, 4));
+    count = queryCount + 1;
+  }
+  dataManager.insertOrder(req.query.username, req.query.isbn, req.query.time, req.query.count);
   res.send('1');
 });
 
@@ -155,4 +223,4 @@ app.get('/replicateAddNewSession', (req, res) => {
 
 setInterval(backup.sendBufferedOperations, 5000);
 
-http.listen(port, () => console.log('Libreria iniciada en 3000'));
+http.listen(port, () => console.log('Libreria iniciada en ' + port));

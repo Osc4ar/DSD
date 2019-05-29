@@ -1,4 +1,4 @@
-const DEFAULT = "192.168.43.48:3000";
+const DEFAULT = "10.0.0.19:3000";
 let mainServer = DEFAULT;
 let hostsDistance = [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY];
 

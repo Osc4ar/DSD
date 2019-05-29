@@ -5,16 +5,7 @@ let bufferedOperations = [];
 function sendRequest(route, errorHandler) {
     const options = [
         {
-            host: '127.0.0.1',
-            port: '7776',
-            path: route,
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        },
-        {
-            host: '127.0.0.1',
+            host: '10.0.0.19',
             port: '3000',
             path: route,
             method: 'GET',
@@ -63,8 +54,8 @@ function updateUser(username, ip, errorHandler) {
     sendRequest('/replicateUpdateUser?username=' + username + '&ip=' + ip, errorHandler);
 }
 
-function newOrder(username, isbn, time, errorHandler) {
-    sendRequest('/replicateNewOrder?username=' + username + '&isbn=' + isbn + '&time=' + time, errorHandler);
+function newOrder(username, isbn, time, count, errorHandler) {
+    sendRequest('/replicateNewOrder?username=' + username + '&isbn=' + isbn + '&time=' + time + '&count=' + count, errorHandler);
 }
 
 function newSession(errorHandler) {
