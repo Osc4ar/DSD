@@ -11,11 +11,15 @@ const librosDisponiblesQuery = "SELECT * FROM LibrosDisponibles";
 const coordinadorQuery = "SELECT * FROM Coordinador order by idPedido DESC";
 const updateIPQuery = "UPDATE Usuario set IP=";
 
+const reset = "\x1b[0m";
+const fgRed = '\x1b[31m';
+const fgBlue = '\x1b[34m';
+
 function connect() {
     let connection = mysql.createConnection(config);
     connection.connect((err)=> {
         if (err) {
-            return console.error('Error: ' + err.message);
+            return console.error(fgRed + '\n! Error: ' + err.message + reset);
         }
     });
     return connection;
@@ -38,7 +42,7 @@ function insertQuery(query) {
         if (err) {
             throw err;
         }
-        console.log('Dato insertado: ' + query);
+        console.log('\n> Query ejecutado:\n\t' + fgBlue + query + reset);
     });
     connection.end();
 }

@@ -1,11 +1,14 @@
 const http = require('http');
 
+const reset = "\x1b[0m";
+const fgYellow = '\x1b[33m';
+
 let bufferedOperations = [];
 
 function sendRequest(route, targets, errorHandler) {
     targets.forEach((target) => {
         hostInfo = target.server.split(':');
-        console.log('Enviando backup a ' + JSON.stringify(target));
+        console.log('\n> Enviando backup a ' + fgYellow + target.server + reset);
         const option = {
             host: hostInfo[0],
             port: hostInfo[1],

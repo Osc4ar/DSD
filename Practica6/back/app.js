@@ -8,6 +8,14 @@ const bodyParser = require('body-parser');
 
 const port = parseInt(process.argv[2]);
 
+const reset = "\x1b[0m";
+const fgRed = '\x1b[31m';
+const fgGreen = '\x1b[32m';
+const fgYellow = '\x1b[33m';
+const fgBlue = '\x1b[34m';
+const fgMagenta = '\x1b[35m';
+const fgCyan = '\x1b[36m';
+
 const io = require('socket.io')(http);
 
 let servers = [
@@ -29,15 +37,15 @@ function serverSocket() {
     socket.on('register', (hostInfo) => {
       socket.hostInfo = hostInfo;
       servers.push(hostInfo);
-      console.log('Conectando ' + socket.hostInfo.server);
-      console.log(servers);
+      console.log('\n> Servidor ' + fgYellow + socket.hostInfo.server + fgGreen + ' conectado'+reset);
+      logServers();
       io.emit('status', servers);
     });
     socket.on('disconnect', (data) => {
-      console.log('Desconectando ' + socket.hostInfo.server);
+      console.log('\n> Servidor ' + fgYellow + socket.hostInfo.server + fgRed + ' desconectado' + reset);
       reallocateClients(socket.hostInfo);
       io.emit('status', servers);
-      console.log(servers);
+      logServers();
     });
   });
 }
@@ -48,20 +56,20 @@ function clientSocket(host) {
   client.emit('register', servers[0]);
   client.on('status', (data) => {
     servers = data;
-    console.log(data);
+    logServers();
   });
   client.on('disconnect', (data) => {
-    console.log('Servidor desconectado');
+    console.log(fgRed + '\n> Servidor principal desconectado' + reset);
     exMainServer = findServer(host);
     reallocateClients(exMainServer);
     serverSocket();
-    console.log('Servidor convertido a servidor principal');
+    console.log('\n> Servidor convertido a servidor principal');
   });
 }
 
 function reallocateClients(oldServer) {
   for (let i = 0; i < servers.length; i++)
-    if (servers[i].server == old.server)
+    if (servers[i].server == oldServer.server)
       servers.splice(i, 1);
   newServer = getLessBusyServer();
   for (let index = 0; index < oldServer.clients.length; index++) {
@@ -76,6 +84,16 @@ function findServer(host) {
     if (servers[i].server == host)
       return servers[i];
   return ;
+}
+
+function logServers() {
+  console.log('\n> Servidores conectados: ' + fgMagenta + servers.length + reset);
+  for (let i = 0; i < servers.length; i++) {
+    console.log('\t[' + (i+1).toString() + '] ' + fgYellow + servers[i].server + reset);
+    console.log('\t\t Clientes: ' + fgMagenta + servers[i].clients.length + reset);
+    for (let j = 0; j < servers[i].clients.length; j++)
+      console.log('\t\t\t[' + (j+1).toString() + '] ' + fgBlue + servers[i].clients[j] + reset);
+  }
 }
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
@@ -117,7 +135,7 @@ app.get('/newSession', (req, res) => {
     const targets = getTargetServers();
     backup.newSession(targets, () => res.send('Error replicando nueva sesión'));
     response = {idSesion: idSesion};
-    console.log(response);
+    console.log('\n> Sesión ' + fgCyan + idSesion + reset + ' iniciada')
     res.send(response);
   });
 });
@@ -157,7 +175,7 @@ app.get('/newServer', (req, res) => {
   if (assignedServer == null) {
     lessBusyServer = getLessBusyServer();
     lessBusyServer.clients.push(req.ip);
-    console.log(servers);
+    logServers();
     io.emit('status', servers);
     res.send({server: lessBusyServer.server});
   } else {
@@ -187,29 +205,24 @@ function getLessBusyServer() {
 }
 
 app.get('/replicateAddUser', (req, res) => {
-  console.log('Replicando operación');
+  console.log('\n> Replicando operación: ' + fgRed + 'Agregar Usuario' + reset);
   dataManager.insertUser(req.query.username, req.query.ip);
   res.send('1');
 });
 
 app.get('/replicateUpdateUser', (req, res) => {
-  console.log('Replicando operación');
+  console.log('\n> Replicando operación: ' + fgRed + 'Actualizar IP Usuario' + reset);
   dataManager.updateUser(req.query.username, req.query.ip);
   res.send('1');
 });
 
 app.get('/replicateNewOrder', (req, res) => {
-  console.log(JSON.stringify({
-    'EVENTO': 'Replicando Operación',
-    'OPERACION': 'Nueva Orden'
-  }, null, 4));
+  console.log('\n> Replicando operación: ' + fgRed + 'Nueva Orden' + reset);
   const queryCount = parseInt(req.query.count);
   if (queryCount > count) {
-    console.log(JSON.stringify({
-      'EVENTO': 'Contador Actualizado',
-      'PREVIO': count,
-      'NUEVO': queryCount+1
-    }, null, 4));
+    console.log(fgGreen + '\n> Reloj lógico actualizado' + reset);
+    console.log('\tValor previo: ' + fgCyan + count + reset);
+    console.log('\tValor nuevo:  ' + fgCyan + (queryCount+1).toString() + reset);
     count = queryCount + 1;
   }
   dataManager.insertOrder(req.query.username, req.query.isbn, req.query.time, req.query.count);
@@ -217,10 +230,10 @@ app.get('/replicateNewOrder', (req, res) => {
 });
 
 app.get('/replicateAddNewSession', (req, res) => {
-  console.log('Replicando operación');
+  console.log('\n> Replicando operación: ' + fgRed + 'Nueva Sesión' + reset);
   dataManager.createNewSession((idSesion) => res.send('1'));
 });
 
 setInterval(backup.sendBufferedOperations, 5000);
 
-http.listen(port, () => console.log('Libreria iniciada en ' + port));
+http.listen(port, () => console.log('> Libreria iniciada en puerto ' + fgCyan + port + reset));
