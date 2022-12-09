@@ -9,7 +9,7 @@
   "author": "Oscar, Carmen, Sofia, America",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "mysql": "^2.16.0",
     "socket.io": "^2.2.0"
   }
